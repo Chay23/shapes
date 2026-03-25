@@ -1,5 +1,5 @@
-function App() {
-  return <></>;
-}
+import Layout from "./components/templates/Layout";
 
-export default App;
+export default function App() {
+  return <Layout></Layout>;
+}
