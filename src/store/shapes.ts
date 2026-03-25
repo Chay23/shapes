@@ -17,4 +17,13 @@ export const useShapes = create<ShapesStore>((set) => ({
           return { shapes: state.shapes };
       }
     }),
+  updateShape: (shape) =>
+    set((state) => {
+      if (state.shapes.has(shape.id)) {
+        const updatedShapes = new Map(state.shapes);
+        updatedShapes.set(shape.id, shape);
+        return { shapes: updatedShapes };
+      }
+      return { shapes: state.shapes };
+    }),
 }));

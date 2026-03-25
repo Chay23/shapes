@@ -1,13 +1,17 @@
 import type { s } from '../../../types';
+import { useShapeTranslate } from '../../../hooks/useShapeTranslate';
 
 type Props = {
   rect: s.Rectangle;
 };
 
 export default function Rectangle({ rect }: Props) {
+  const { handlePointerDown } = useShapeTranslate(rect);
+
   return (
-    <g>
+    <g onPointerDown={handlePointerDown}>
       <rect
+        className='cursor-pointer'
         x={rect.x}
         y={rect.y}
         width={rect.width}
