@@ -1,2 +1,2 @@
-export const DEFAULT_TYPE_RECTANGLE_H = '50';
-export const DEFAULT_TYPE_RECTANGLE_W = '100';
+export const DEFAULT_TYPE_RECTANGLE_H = 50;
+export const DEFAULT_TYPE_RECTANGLE_W = 100;

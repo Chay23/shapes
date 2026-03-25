@@ -18,7 +18,7 @@ export default function Toolbar() {
     const screenWidth = window.innerWidth;
     const x = screenWidth / 2;
     const y = screenHeight / 2;
-    addShape(type, crypto.randomUUID(), x.toString(), y.toString());
+    addShape(type, crypto.randomUUID(), x, y);
   };
 
   return (

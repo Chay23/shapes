@@ -20,13 +20,13 @@ export function useShapeTranslate(shape: s.Shapes) {
 
       switch (shape.type) {
         case 'rectangle': {
-          const updatedRectX = parseInt(shape.x) + leftShift;
-          const updatedRectY = parseInt(shape.y) + topShift;
+          const updatedRectX = shape.x + leftShift;
+          const updatedRectY = shape.y + topShift;
 
           updateShape({
             ...shape,
-            x: updatedRectX.toString(),
-            y: updatedRectY.toString(),
+            x: updatedRectX,
+            y: updatedRectY,
           });
         }
       }

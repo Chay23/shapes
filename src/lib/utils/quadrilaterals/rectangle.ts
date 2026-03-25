@@ -11,8 +11,8 @@ import {
 
 export const constructRectangle = (
   id: string,
-  x: string,
-  y: string,
+  x: number,
+  y: number,
 ): s.Rectangle => ({
   id: id,
   type: TYPE_RECTANGLE,

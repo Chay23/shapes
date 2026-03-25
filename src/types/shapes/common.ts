@@ -6,8 +6,8 @@ export type BaseShape = {
   id: string;
   fill: string;
   stroke: string;
-  x: string;
-  y: string;
+  x: number;
+  y: number;
 };
 
 export type Shape<S extends BaseShape, T extends ShapeType> = S & {
