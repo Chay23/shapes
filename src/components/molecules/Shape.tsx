@@ -1,3 +1,4 @@
+import { TYPE_RECTANGLE } from '../../lib/constants/common';
 import type { s } from '../../types';
 import { QuadrilateralWrapper } from './quadrilaterals/QuadrilateralWrapper';
 import Rectangle from './quadrilaterals/Rectangle';
@@ -8,9 +9,9 @@ type Props = {
 
 export function Shape({ shape }: Props) {
   switch (shape.type) {
-    case 'rectangle':
+    case TYPE_RECTANGLE:
       return (
-        <QuadrilateralWrapper>
+        <QuadrilateralWrapper rect={shape}>
           <Rectangle rect={shape} />
         </QuadrilateralWrapper>
       );
