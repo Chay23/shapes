@@ -11,7 +11,7 @@ export function Shape({ shape }: Props) {
   switch (shape.type) {
     case TYPE_RECTANGLE:
       return (
-        <QuadrilateralWrapper rect={shape}>
+        <QuadrilateralWrapper quadrilateral={shape}>
           <Rectangle rect={shape} />
         </QuadrilateralWrapper>
       );
