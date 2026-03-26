@@ -11,7 +11,7 @@ export default function Rectangle({ rect }: Props) {
   return (
     <g onPointerDown={handlePointerDown}>
       <rect
-        className='cursor-pointer'
+        className='cursor-pointer shape'
         x={rect.x}
         y={rect.y}
         width={rect.width}

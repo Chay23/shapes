@@ -4,8 +4,12 @@ import type { s } from '../types';
 
 export function useShapeTranslate(shape: s.Shapes) {
   const updateShape = useShapes((state) => state.updateShape);
+  const selectShape = useShapes((state) => state.selectShape);
+  const deselectShapes = useShapes((state) => state.deselectShapes);
 
   const handlePointerDown = (e: PointerEvent<SVGGElement>) => {
+    deselectShapes();
+    selectShape(shape);
     const startX = e.clientX;
     const startY = e.clientY;
 

@@ -5,6 +5,7 @@ import { constructRectangle } from '../lib/utils/quadrilaterals/rectangle';
 
 export const useShapes = create<ShapesStore>((set) => ({
   shapes: new Map(),
+  selectedShapes: new Map(),
   addShape: (type, id, x, y) =>
     set((state) => {
       const updatedShapes = new Map(state.shapes);
@@ -25,5 +26,19 @@ export const useShapes = create<ShapesStore>((set) => ({
         return { shapes: updatedShapes };
       }
       return { shapes: state.shapes };
+    }),
+  selectShape: (shape) =>
+    set((state) => {
+      if (state.shapes.has(shape.id)) {
+        const updatedSelectedShapes = new Map(state.selectedShapes);
+        updatedSelectedShapes.set(shape.id, shape);
+        return { selectedShapes: updatedSelectedShapes };
+      }
+      return { selectedShapes: state.selectedShapes };
+    }),
+
+  deselectShapes: () =>
+    set((state) => {
+      return { selectedShapes: new Map() };
     }),
 }));
