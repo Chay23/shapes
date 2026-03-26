@@ -6,6 +6,7 @@ export type BaseShape = {
   id: string;
   fill: string;
   stroke: string;
+  strokeWidth: number;
   x: number;
   y: number;
 };

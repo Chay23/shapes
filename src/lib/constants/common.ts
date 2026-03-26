@@ -3,12 +3,14 @@ export const TYPE_TRIANGLE = 'triangle';
 export const TYPE_CIRCLE = 'circle';
 export const TYPE_ELLIPSE = 'ellipse';
 
-export const DEFAULT_FILL_COLOR = '#ffffff';
+export const DEFAULT_FILL_COLOR = '#f2f2f2';
 export const DEFAULT_STROKE_COLOR = '#000000';
+export const DEFAULT_STROKE_WIDTH = 0;
 
-export const RESIZE_CIRCLE_R = '4';
-export const RESIZE_CIRCLE_FILL = '#b8b8b8';
-
+export const RESIZE_CIRCLE_R = '3';
+export const RESIZE_CIRCLE_FILL = '#ffffff';
+export const RESIZE_CIRCLE_STROKE_COLOR = '#000000';
+export const RESIZE_CIRCLE_STROKE_WIDTH = 0.5;
 
 export const NORTH_RESIZE = 'north';
 export const NORTH_WEST_RESIZE = 'north-west';

@@ -7,15 +7,13 @@ export default function Scene() {
   const deselectShapes = useShapes((state) => state.deselectShapes);
 
   useEffect(() => {
-    const handleClickOutside = (event: PointerEvent) => {
+    const handleDeselectShape = (event: PointerEvent) => {
       if (!(event.target instanceof Element)) {
         return;
       }
-      const clickedElement = event.target;
-      const isRectangleClick = clickedElement.closest('.shape');
-      const isResizeHandleClick = clickedElement.closest('.resize-btn');
+      const keepSelection = event.target.closest('[data-keep-selection]');
 
-      if (!isRectangleClick && !isResizeHandleClick) {
+      if (!keepSelection) {
         deselectShapes();
       }
     };
@@ -24,7 +22,7 @@ export default function Scene() {
     const controller = new AbortController();
 
     if (sceneElement) {
-      document.addEventListener('pointerdown', handleClickOutside, {
+      document.addEventListener('pointerdown', handleDeselectShape, {
         signal: controller.signal,
       });
     }

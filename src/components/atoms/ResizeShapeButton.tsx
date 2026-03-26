@@ -1,6 +1,8 @@
 import {
   RESIZE_CIRCLE_FILL,
   RESIZE_CIRCLE_R,
+  RESIZE_CIRCLE_STROKE_COLOR,
+  RESIZE_CIRCLE_STROKE_WIDTH,
 } from '../../lib/constants/common';
 
 type Props = Omit<React.SVGAttributes<SVGCircleElement>, 'r' | 'fill'> & {
@@ -9,6 +11,13 @@ type Props = Omit<React.SVGAttributes<SVGCircleElement>, 'r' | 'fill'> & {
 
 export default function ResizeShapeButton(props: Props) {
   return (
-    <circle {...props} r={RESIZE_CIRCLE_R} fill={RESIZE_CIRCLE_FILL}></circle>
+    <circle
+      {...props}
+      data-keep-selection={true}
+      r={RESIZE_CIRCLE_R}
+      fill={RESIZE_CIRCLE_FILL}
+      stroke={RESIZE_CIRCLE_STROKE_COLOR}
+      strokeWidth={RESIZE_CIRCLE_STROKE_WIDTH}
+    ></circle>
   );
 }

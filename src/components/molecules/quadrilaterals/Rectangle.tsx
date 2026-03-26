@@ -11,13 +11,15 @@ export default function Rectangle({ rect }: Props) {
   return (
     <g onPointerDown={handlePointerDown}>
       <rect
-        className='cursor-pointer shape'
+        data-keep-selection={true}
+        className='cursor-pointer'
         x={rect.x}
         y={rect.y}
         width={rect.width}
         height={rect.height}
         fill={rect.fill}
         stroke={rect.stroke}
+        strokeWidth={rect.strokeWidth}
       ></rect>
     </g>
   );

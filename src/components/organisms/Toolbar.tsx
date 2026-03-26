@@ -22,9 +22,12 @@ export default function Toolbar() {
   };
 
   return (
-    <div className='fixed bottom-3 left-1/2 -translate-x-1/2 bg-surface z-999'>
+    <div
+      data-keep-selection={true}
+      className='fixed bottom-3 left-1/2 -translate-x-1/2 bg-surface z-999'
+    >
       <div className='p-3 rounded-xl bg-gray-100'>
-        <div className='grid grid-cols-4 gap-2'>
+        <div className='flex gap-2'>
           <ShapeTypeButton data-type={TYPE_RECTANGLE} onClick={handleAddShape}>
             Rectangle
           </ShapeTypeButton>

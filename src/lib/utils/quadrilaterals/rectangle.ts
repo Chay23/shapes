@@ -2,6 +2,7 @@ import type { s } from '../../../types';
 import {
   DEFAULT_FILL_COLOR,
   DEFAULT_STROKE_COLOR,
+  DEFAULT_STROKE_WIDTH,
   TYPE_RECTANGLE,
 } from '../../constants/common';
 import {
@@ -17,6 +18,7 @@ export const constructRectangle = (
   id: id,
   type: TYPE_RECTANGLE,
   stroke: DEFAULT_STROKE_COLOR,
+  strokeWidth: DEFAULT_STROKE_WIDTH,
   fill: DEFAULT_FILL_COLOR,
   height: DEFAULT_TYPE_RECTANGLE_H,
   width: DEFAULT_TYPE_RECTANGLE_W,
