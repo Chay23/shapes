@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useShapes } from '../../../store/shapes';
+import { Input } from '@/components/atoms/Input';
+import { Field, FieldLabel } from '@/components/atoms/Field';
+import { Separator } from '@/components/atoms/Separator';
 
 export default function QuadrilateralSizeEditor() {
   const selectedShapes = useShapes((state) => state.selectedShapes);
@@ -47,38 +50,31 @@ export default function QuadrilateralSizeEditor() {
   };
 
   return (
-    <article className='border-b-2 py-2'>
+    <article>
       <h5>Size</h5>
-      <div className='flex gap-3'>
-        <div className='flex-1 min-w-0'>
-          {/* // make separate label component */}
-          <label className='text-xs' htmlFor='shape-height'>
-            Height
-          </label>
-          <input
+      <div className='flex gap-3 py-2'>
+        <Field className='flex-1'>
+          <FieldLabel htmlFor='shape-height'>Height</FieldLabel>
+          <Input
             id='shape-height'
             value={size.height}
-            className='w-full'
             name='height'
             onChange={handleSizeChange}
             onBlur={handleApplySizeChange}
           />
-        </div>
-        <div className='flex-1 min-w-0'>
-          {/* // make separate label component */}
-          <label className='text-xs' htmlFor='shape-width'>
-            Width
-          </label>
-          <input
+        </Field>
+        <Field className='flex-1'>
+          <FieldLabel htmlFor='shape-width'>Width</FieldLabel>
+          <Input
             id='shape-width'
             value={size.width}
-            className='w-full'
             name='width'
             onChange={handleSizeChange}
             onBlur={handleApplySizeChange}
           />
-        </div>
+        </Field>
       </div>
+      <Separator />
     </article>
   );
 }
