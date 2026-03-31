@@ -1,15 +1,11 @@
 import { type MouseEvent } from 'react';
-import {
-  TYPE_CIRCLE,
-  TYPE_ELLIPSE,
-  TYPE_RECTANGLE,
-  TYPE_TRIANGLE,
-} from '../../lib/constants/common';
+import { TYPE_RECTANGLE } from '../../lib/constants/common';
 import { ShapeTypeButton } from '../atoms/ShapeTypeButton';
 import type { s } from '../../types';
 import { useShapes } from '../../store/shapes';
+import { toolbarOptions } from '@/lib/utils/common';
 
-export default function Toolbar() {
+export default function BottomToolbar() {
   const addShape = useShapes((state) => state.addShape);
 
   const handleAddShape = (e: MouseEvent<HTMLButtonElement>) => {
@@ -26,14 +22,27 @@ export default function Toolbar() {
       data-keep-selection={true}
       className='fixed bottom-3 left-1/2 -translate-x-1/2 bg-surface z-999'
     >
-      <div className='p-3 rounded-xl bg-gray-100'>
-        <div className='flex gap-2'>
+      <div className='py-1.5 px-4 rounded-lg bg-card shadow-md'>
+        <div className='flex gap-3'>
+          {toolbarOptions.map(({ id, component, dataType }) => {
+            if (!component) {
+              return <div key={id} className='w-4' />;
+            }
+
+            const Component = component;
+            return (
+              <ShapeTypeButton
+                key={id}
+                data-type={dataType}
+                onClick={handleAddShape}
+              >
+                <Component strokeWidth={1} />
+              </ShapeTypeButton>
+            );
+          })}
           <ShapeTypeButton data-type={TYPE_RECTANGLE} onClick={handleAddShape}>
             Rectangle
           </ShapeTypeButton>
-          <ShapeTypeButton data-type={TYPE_TRIANGLE}>Triangle</ShapeTypeButton>
-          <ShapeTypeButton data-type={TYPE_CIRCLE}>Circle</ShapeTypeButton>
-          <ShapeTypeButton data-type={TYPE_ELLIPSE}>Ellipse</ShapeTypeButton>
         </div>
       </div>
     </div>

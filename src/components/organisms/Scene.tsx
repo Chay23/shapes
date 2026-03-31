@@ -35,7 +35,7 @@ export default function Scene() {
   }, []);
 
   return (
-    <div id='scene' className='h-full w-full'>
+    <div id='scene' className='h-full w-full bg-background'>
       <svg
         style={{
           left: '0px',

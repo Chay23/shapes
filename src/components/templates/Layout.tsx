@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
-import Toolbar from '../organisms/Toolbar';
 import Sidebar from './Sidebar';
-import ShapeEditor from '../organisms/editor/ShapeEditor';
 import SidebarContent from '../organisms/SidebarContent';
+import BottomToolbar from '../organisms/bottom-toolbar';
 
 type Props = {
   children?: ReactNode;
@@ -11,7 +10,7 @@ type Props = {
 export default function Layout({ children }: Props) {
   return (
     <main className='h-screen'>
-      <Toolbar />
+      <BottomToolbar />
       <Sidebar>
         <SidebarContent />
       </Sidebar>
