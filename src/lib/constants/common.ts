@@ -1,7 +1,9 @@
 export const TYPE_RECTANGLE = 'rectangle';
 export const TYPE_TRIANGLE = 'triangle';
-export const TYPE_CIRCLE = 'circle';
+export const TYPE_LINE = 'line';
 export const TYPE_ELLIPSE = 'ellipse';
+export const TYPE_TEXT = 'text';
+export const TYPE_ARROW = 'arrow';
 
 export const DEFAULT_FILL_COLOR = '#f2f2f2';
 export const DEFAULT_STROKE_COLOR = '#000000';
