@@ -1,6 +1,6 @@
 import { TYPE_RECTANGLE } from '../../../lib/constants/common';
 import { useShapes } from '../../../store/shapes';
-import QuadrilateralEditor from './QuadrilateralEditor';
+import RectangleEditor from './RectangleEditor';
 
 export default function ShapeEditor() {
   const selectedShapes = useShapes((state) => state.selectedShapes);
@@ -8,7 +8,7 @@ export default function ShapeEditor() {
 
   switch (selectedShape.type) {
     case TYPE_RECTANGLE: {
-      return <QuadrilateralEditor />;
+      return <RectangleEditor />;
     }
   }
 

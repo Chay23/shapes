@@ -1,4 +1,4 @@
-import type { Rectangle } from './quadrilaterals';
+import type { Rectangle } from './rectangle';
 
 export type ShapeType = 'rectangle';
 
@@ -7,12 +7,11 @@ export type BaseShape = {
   fill: string;
   stroke: string;
   strokeWidth: number;
-  x: number;
-  y: number;
 };
 
-export type Shape<S extends BaseShape, T extends ShapeType> = S & {
-  type: T;
-};
+export type Shape<S, T extends ShapeType> = BaseShape &
+  S & {
+    type: T;
+  };
 
 export type Shapes = Rectangle;

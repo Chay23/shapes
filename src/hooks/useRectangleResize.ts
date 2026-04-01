@@ -1,15 +1,15 @@
-import { getUpdatedQuadrilateral } from '../lib/constants/quadrilaterals/common';
+import { getUpdatedRectangle } from '@/lib/utils/rectangle';
 import { useShapes } from '../store/shapes';
 import type { s } from '../types';
 
 type Props = {
-  quadrilateral: s.Quadrilateral;
+  rectangle: s.Rectangle;
 };
 
-export default function useQuadrilateralResize({ quadrilateral }: Props) {
+export default function useRectangleResize({ rectangle }: Props) {
   const updateShape = useShapes((state) => state.updateShape);
 
-  const handleQuadrilateralResize = (
+  const handleRectangleResize = (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => {
     const element = pointerDownEvent.currentTarget;
@@ -28,14 +28,14 @@ export default function useQuadrilateralResize({ quadrilateral }: Props) {
         const shiftX = pointerMoveEvent.clientX - pressStartX;
         const shiftY = pointerMoveEvent.clientY - pressStartY;
 
-        const updatedQuadrilateral = getUpdatedQuadrilateral(
-          quadrilateral,
+        const updatedRectangle = getUpdatedRectangle(
+          rectangle,
           resizeSide,
           shiftX,
           shiftY,
         );
 
-        updateShape(updatedQuadrilateral);
+        updateShape(updatedRectangle);
       },
       { signal: controller.signal },
     );
@@ -43,5 +43,5 @@ export default function useQuadrilateralResize({ quadrilateral }: Props) {
     element.addEventListener('pointerup', () => controller.abort());
   };
 
-  return { handleQuadrilateralResize };
+  return { handleRectangleResize };
 }

@@ -1,4 +1,4 @@
-import useQuadrilateralResize from '../../../hooks/useQuadrilateralResize';
+import useRectangleResize from '@/hooks/useRectangleResize';
 import {
   EAST_RESIZE,
   NORTH_EAST_RESIZE,
@@ -14,21 +14,21 @@ import type { s } from '../../../types';
 import ResizeShapeButton from '../../atoms/ResizeShapeButton';
 
 type Props = {
-  quadrilateral: s.Quadrilateral;
+  rectangle: s.Rectangle;
   children?: React.ReactNode;
 };
 
-export function QuadrilateralWrapper({ quadrilateral, children }: Props) {
+export function RectangleWrapper({ rectangle, children }: Props) {
   const selectedShapes = useShapes((state) => state.selectedShapes);
-  const isShapeSelected = selectedShapes.has(quadrilateral.id);
-  const { handleQuadrilateralResize } = useQuadrilateralResize({
-    quadrilateral,
+  const isShapeSelected = selectedShapes.has(rectangle.id);
+  const { handleRectangleResize } = useRectangleResize({
+    rectangle,
   });
 
-  const middleResizePositionX = quadrilateral.x + quadrilateral.width / 2;
-  const middleResizePositionY = quadrilateral.y + quadrilateral.height / 2;
-  const eastResizePositionX = quadrilateral.x + quadrilateral.width;
-  const southResizePositionY = quadrilateral.y + quadrilateral.height;
+  const middleResizePositionX = rectangle.x + rectangle.width / 2;
+  const middleResizePositionY = rectangle.y + rectangle.height / 2;
+  const eastResizePositionX = rectangle.x + rectangle.width;
+  const southResizePositionY = rectangle.y + rectangle.height;
 
   return (
     <g>
@@ -36,62 +36,62 @@ export function QuadrilateralWrapper({ quadrilateral, children }: Props) {
       {isShapeSelected && (
         <g>
           <ResizeShapeButton
-            cx={quadrilateral.x}
-            cy={quadrilateral.y}
+            cx={rectangle.x}
+            cy={rectangle.y}
             data-resize-side={NORTH_WEST_RESIZE}
             className='cursor-nw-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
           <ResizeShapeButton
             cx={middleResizePositionX}
-            cy={quadrilateral.y}
+            cy={rectangle.y}
             data-resize-side={NORTH_RESIZE}
             className='cursor-n-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
           <ResizeShapeButton
             cx={eastResizePositionX}
-            cy={quadrilateral.y}
+            cy={rectangle.y}
             data-resize-side={NORTH_EAST_RESIZE}
             className='cursor-ne-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
 
           <ResizeShapeButton
-            cx={quadrilateral.x}
+            cx={rectangle.x}
             cy={southResizePositionY}
             data-resize-side={SOUTH_WEST_RESIZE}
             className='cursor-sw-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
           <ResizeShapeButton
             cx={middleResizePositionX}
             cy={southResizePositionY}
             data-resize-side={SOUTH_RESIZE}
             className='cursor-s-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
           <ResizeShapeButton
             cx={eastResizePositionX}
             cy={southResizePositionY}
             data-resize-side={SOUTH_EAST_RESIZE}
             className='cursor-se-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
 
           <ResizeShapeButton
-            cx={quadrilateral.x}
+            cx={rectangle.x}
             cy={middleResizePositionY}
             data-resize-side={WEST_RESIZE}
             className='cursor-w-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
           <ResizeShapeButton
             cx={eastResizePositionX}
             cy={middleResizePositionY}
             data-resize-side={EAST_RESIZE}
             className='cursor-e-resize resize-btn'
-            onPointerDown={handleQuadrilateralResize}
+            onPointerDown={handleRectangleResize}
           />
         </g>
       )}

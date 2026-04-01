@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { ShapesStore } from '../types/store/shapes';
 import { TYPE_RECTANGLE } from '../lib/constants/common';
-import { constructRectangle } from '../lib/utils/quadrilaterals/rectangle';
+import { constructRectangle } from '../lib/utils/rectangle';
 
 export const useShapes = create<ShapesStore>((set) => ({
   shapes: new Map(),

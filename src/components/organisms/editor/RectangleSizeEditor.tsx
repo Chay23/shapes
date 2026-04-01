@@ -4,7 +4,7 @@ import { Input } from '@/components/atoms/Input';
 import { Field, FieldLabel } from '@/components/atoms/Field';
 import { Separator } from '@/components/atoms/Separator';
 
-export default function QuadrilateralSizeEditor() {
+export default function RectangleSizeEditor() {
   const selectedShapes = useShapes((state) => state.selectedShapes);
   const selectedShape = Array.from(selectedShapes.values())[0];
   const updateShape = useShapes((state) => state.updateShape);
