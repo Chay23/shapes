@@ -57,6 +57,7 @@
 
   --input: oklch(0.7668 0 0);
   --ring: oklch(0.708 0 0);
+  --hover: oklch(0.9067 0 0);
 
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -143,6 +144,7 @@ p {
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-hover: var(--hover);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
