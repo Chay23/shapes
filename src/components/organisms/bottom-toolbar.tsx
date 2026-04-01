@@ -5,7 +5,7 @@ import { useShapes } from '../../store/shapes';
 import { toolbarOptions } from '@/lib/utils/common';
 
 export default function BottomToolbar() {
-  const addShape = useShapes(state => state.addShape);
+  const addShape = useShapes((state) => state.addShape);
 
   const handleAddShape = (e: MouseEvent<HTMLButtonElement>) => {
     const type = e.currentTarget.getAttribute('data-type') as
@@ -26,14 +26,16 @@ export default function BottomToolbar() {
   return (
     <div
       data-keep-selection={true}
-      className='fixed bottom-3 left-1/2 -translate-x-1/2 bg-surface z-999'>
+      className='fixed bottom-3 left-1/2 -translate-x-1/2 bg-surface z-999'
+    >
       <div className='py-1.5 px-4 rounded-lg bg-card shadow-md'>
         <div className='flex gap-3'>
           {toolbarOptions.map(({ id, component: Component, dataType }) => (
             <ShapeTypeButton
               key={id}
               data-type={dataType}
-              onClick={handleAddShape}>
+              onClick={handleAddShape}
+            >
               <Component strokeWidth={1} />
             </ShapeTypeButton>
           ))}

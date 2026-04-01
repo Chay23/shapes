@@ -38,7 +38,7 @@ export const useShapes = create<ShapesStore>((set) => ({
     }),
 
   deselectShapes: () =>
-    set((state) => {
+    set(() => {
       return { selectedShapes: new Map() };
     }),
 }));
