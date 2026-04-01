@@ -30,15 +30,18 @@ export default function RectangleSizeEditor() {
     }));
   };
 
-  const handleApplySizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const resetValue = (name: string, value: string) => {
+    setSize((prevSize) => ({
+      ...prevSize,
+      [name]: selectedShape[name],
+    }));
+  };
+
+  const applySizeChange = (name: string, value: string) => {
     if (!selectedShape) return;
 
     if (!value) {
-      setSize((prevSize) => ({
-        ...prevSize,
-        [name]: selectedShape[name],
-      }));
+      resetValue(name, value);
       return;
     }
 
@@ -47,6 +50,20 @@ export default function RectangleSizeEditor() {
       return;
     }
     updateShape({ ...selectedShape, width: parseFloat(value) });
+  };
+
+  const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+
+    applySizeChange(name, value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+
+    if (e.key === 'Enter') {
+      applySizeChange(name, value);
+    }
   };
 
   return (
@@ -60,7 +77,8 @@ export default function RectangleSizeEditor() {
             value={size.height}
             name='height'
             onChange={handleSizeChange}
-            onBlur={handleApplySizeChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
           />
         </Field>
         <Field className='flex-1'>
@@ -70,7 +88,8 @@ export default function RectangleSizeEditor() {
             value={size.width}
             name='width'
             onChange={handleSizeChange}
-            onBlur={handleApplySizeChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
           />
         </Field>
       </div>
