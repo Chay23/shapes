@@ -5,7 +5,7 @@ import { constructRectangle } from '../lib/utils/rectangle';
 
 export const useShapes = create<ShapesStore>((set) => ({
   shapes: new Map(),
-  selectedShapes: new Map(),
+  selectedShapeIds: new Set(),
   addShape: (type, id, x, y) =>
     set((state) => {
       const updatedShapes = new Map(state.shapes);
@@ -30,15 +30,15 @@ export const useShapes = create<ShapesStore>((set) => ({
   selectShape: (shape) =>
     set((state) => {
       if (state.shapes.has(shape.id)) {
-        const updatedSelectedShapes = new Map(state.selectedShapes);
-        updatedSelectedShapes.set(shape.id, shape);
-        return { selectedShapes: updatedSelectedShapes };
+        const updatedSelectedShapeIds = new Set(state.selectedShapeIds);
+        updatedSelectedShapeIds.add(shape.id);
+        return { selectedShapeIds: updatedSelectedShapeIds };
       }
-      return { selectedShapes: state.selectedShapes };
+      return { selectedShapeIds: state.selectedShapeIds };
     }),
 
   deselectShapes: () =>
     set(() => {
-      return { selectedShapes: new Map() };
+      return { selectedShapeIds: new Set() };
     }),
 }));

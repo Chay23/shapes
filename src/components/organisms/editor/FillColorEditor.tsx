@@ -3,10 +3,11 @@ import { useShapes } from '../../../store/shapes';
 import { Input } from '@/components/atoms/Input';
 import { ButtonGroup } from '@/components/atoms/ButtonGroup';
 import { Button } from '@/components/atoms/Button';
+import { useSelectedShape } from '@/store/selectors';
+import type { s } from '@/types';
 
 export default function FillColorEditor() {
-  const selectedShapes = useShapes((state) => state.selectedShapes);
-  const selectedShape = Array.from(selectedShapes.values())[0];
+  const selectedShape = useSelectedShape() as s.Rectangle;
   const updateShape = useShapes((state) => state.updateShape);
   const [fill, setFill] = useState(selectedShape.fill);
   const colorPickerRef = useRef<HTMLInputElement>(null);

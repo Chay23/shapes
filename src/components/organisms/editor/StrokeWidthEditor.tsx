@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useShapes } from '../../../store/shapes';
 import { Slider } from '@/components/atoms/Slider';
 import { Separator } from '@/components/atoms/Separator';
+import { useSelectedShape } from '@/store/selectors';
+import type { s } from '@/types';
 
 export default function StrokeWidthEditor() {
-  const selectedShapes = useShapes((state) => state.selectedShapes);
-  const selectedShape = Array.from(selectedShapes.values())[0];
+  const selectedShape = useSelectedShape() as s.Rectangle;
   const updateShape = useShapes((state) => state.updateShape);
   const [strokeWidth, setStrokeWidth] = useState([selectedShape.strokeWidth]);
 

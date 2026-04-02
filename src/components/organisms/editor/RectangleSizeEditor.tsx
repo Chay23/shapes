@@ -3,16 +3,24 @@ import { useShapes } from '../../../store/shapes';
 import { Input } from '@/components/atoms/Input';
 import { Field, FieldLabel } from '@/components/atoms/Field';
 import { Separator } from '@/components/atoms/Separator';
+import { useSelectedShape } from '@/store/selectors';
+import type { s } from '@/types';
+
+type RectangleSize = {
+  width: string | number;
+  height: string | number;
+};
+
+type InputName = 'width' | 'height';
 
 export default function RectangleSizeEditor() {
-  const selectedShapes = useShapes((state) => state.selectedShapes);
-  const selectedShape = Array.from(selectedShapes.values())[0];
+  const selectedShape = useSelectedShape() as s.Rectangle;
   const updateShape = useShapes((state) => state.updateShape);
 
-  const [size, setSize] = useState({
-    width: selectedShape.width,
-    height: selectedShape.height,
-  });
+  const [size, setSize] = useState<Partial<RectangleSize>>({});
+
+  const displayWidth = 'width' in size ? size.width : selectedShape.width;
+  const displayHeight = 'height' in size ? size.height : selectedShape.height;
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,20 +38,15 @@ export default function RectangleSizeEditor() {
     }));
   };
 
-  const resetValue = (name: string, value: string) => {
-    setSize((prevSize) => ({
-      ...prevSize,
-      [name]: selectedShape[name],
-    }));
-  };
-
-  const applySizeChange = (name: string, value: string) => {
+  const applySizeChange = (name: InputName, value: string) => {
     if (!selectedShape) return;
 
     if (!value) {
-      resetValue(name, value);
+      setSize({});
       return;
     }
+
+    setSize({});
 
     if (name === 'height') {
       updateShape({ ...selectedShape, height: parseFloat(value) });
@@ -55,14 +58,14 @@ export default function RectangleSizeEditor() {
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
 
-    applySizeChange(name, value);
+    applySizeChange(name as InputName, value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
 
     if (e.key === 'Enter') {
-      applySizeChange(name, value);
+      applySizeChange(name as InputName, value);
     }
   };
 
@@ -74,7 +77,7 @@ export default function RectangleSizeEditor() {
           <FieldLabel htmlFor='shape-height'>Height</FieldLabel>
           <Input
             id='shape-height'
-            value={size.height}
+            value={displayHeight}
             name='height'
             onChange={handleSizeChange}
             onBlur={handleBlur}
@@ -85,7 +88,7 @@ export default function RectangleSizeEditor() {
           <FieldLabel htmlFor='shape-width'>Width</FieldLabel>
           <Input
             id='shape-width'
-            value={size.width}
+            value={displayWidth}
             name='width'
             onChange={handleSizeChange}
             onBlur={handleBlur}

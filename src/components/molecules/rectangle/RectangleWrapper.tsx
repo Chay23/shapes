@@ -9,9 +9,9 @@ import {
   SOUTH_WEST_RESIZE,
   WEST_RESIZE,
 } from '../../../lib/constants/common';
-import { useShapes } from '../../../store/shapes';
 import type { s } from '../../../types';
 import ResizeShapeButton from '../../atoms/ResizeShapeButton';
+import { useIsShapeSelected } from '@/store/selectors';
 
 type Props = {
   rectangle: s.Rectangle;
@@ -19,8 +19,7 @@ type Props = {
 };
 
 export function RectangleWrapper({ rectangle, children }: Props) {
-  const selectedShapes = useShapes((state) => state.selectedShapes);
-  const isShapeSelected = selectedShapes.has(rectangle.id);
+  const isShapeSelected = useIsShapeSelected(rectangle.id);
   const { handleRectangleResize } = useRectangleResize({
     rectangle,
   });
