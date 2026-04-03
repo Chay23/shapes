@@ -27,6 +27,21 @@ export const useShapes = create<ShapesStore>((set) => ({
       }
       return { shapes: state.shapes };
     }),
+  deleteShape: (id: string) => {
+    set((state) => {
+      if (state.shapes.has(id)) {
+        const updatedShapes = new Map(state.shapes);
+        updatedShapes.delete(id);
+        const updatedSelectedShapeIds = new Set(state.selectedShapeIds);
+        updatedSelectedShapeIds.delete(id);
+        return {
+          shapes: updatedShapes,
+          selectedShapeIds: updatedSelectedShapeIds,
+        };
+      }
+      return { shapes: state.shapes, selectedShapeIds: state.selectedShapeIds };
+    });
+  },
   selectShape: (shape) =>
     set((state) => {
       if (state.shapes.has(shape.id)) {

@@ -12,6 +12,7 @@ import {
 import type { s } from '../../../types';
 import ResizeShapeButton from '../../atoms/ResizeShapeButton';
 import { useIsShapeSelected } from '@/store/selectors';
+import ShapeWrapper from '../ShapeWrapper';
 
 type Props = {
   rectangle: s.Rectangle;
@@ -30,7 +31,7 @@ export function RectangleWrapper({ rectangle, children }: Props) {
   const southResizePositionY = rectangle.y + rectangle.height;
 
   return (
-    <g>
+    <ShapeWrapper>
       {children}
       {isShapeSelected && (
         <g>
@@ -94,6 +95,6 @@ export function RectangleWrapper({ rectangle, children }: Props) {
           />
         </g>
       )}
-    </g>
+    </ShapeWrapper>
   );
 }
