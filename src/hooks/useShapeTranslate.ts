@@ -1,5 +1,5 @@
 import type { PointerEvent } from 'react';
-import { useShapes } from '../store/shapes';
+import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 
 export function useShapeTranslate(shape: s.Shapes) {

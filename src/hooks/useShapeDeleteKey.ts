@@ -1,8 +1,8 @@
-import { useSelectedShape } from '@/store/selectors';
-import { useShapes } from '@/store/shapes';
+import { useSelectedShape } from '@/store/shapes/selectors';
+import { useShapes } from '@/store/shapes/shapes';
 import { useEffect } from 'react';
 
-export default function useShapeDelete() {
+export default function useShapeDeleteKey() {
   const selectedShape = useSelectedShape();
   const deleteShape = useShapes((state) => state.deleteShape);
 

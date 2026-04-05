@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
-import { useShapes } from '../../../store/shapes';
+import { useShapes } from '../../../store/shapes/shapes';
 import { Input } from '@/components/atoms/Input';
 import { ButtonGroup } from '@/components/atoms/ButtonGroup';
 import { Button } from '@/components/atoms/Button';
-import { useSelectedShape } from '@/store/selectors';
 import type { s } from '@/types';
+import { useSelectedShape } from '@/store/shapes/selectors';
 
 export default function FillColorEditor() {
   const selectedShape = useSelectedShape() as s.Rectangle;

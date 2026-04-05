@@ -1,4 +1,4 @@
-import { useShapes } from '../../store/shapes';
+import { useShapes } from '../../store/shapes/shapes';
 import SceneEditor from './editor/SceneEditor';
 import ShapeEditor from './editor/ShapeEditor';
 

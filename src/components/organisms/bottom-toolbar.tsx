@@ -1,7 +1,7 @@
 import { type MouseEvent } from 'react';
 import { ShapeTypeButton } from '../atoms/ShapeTypeButton';
 import type { s } from '../../types';
-import { useShapes } from '../../store/shapes';
+import { useShapes } from '../../store/shapes/shapes';
 import { toolbarOptions } from '@/lib/utils/common';
 
 export default function BottomToolbar() {

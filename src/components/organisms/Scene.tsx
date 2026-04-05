@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { useShapes } from '../../store/shapes';
+import { useShapes } from '../../store/shapes/shapes';
 import { Shape } from '../molecules/Shape';
+import { useCloseContextMenu } from '@/store/contextMenu/selectors';
 
 export default function Scene() {
   const shapes = useShapes((state) => state.shapes);
   const deselectShapes = useShapes((state) => state.deselectShapes);
+  const closeContextMenu = useCloseContextMenu();
 
   useEffect(() => {
     const handleDeselectShape = (event: PointerEvent) => {
@@ -12,9 +14,13 @@ export default function Scene() {
         return;
       }
       const keepSelection = event.target.closest('[data-keep-selection]');
+      const popoverIsOpened = document.querySelector(
+        '[data-radix-popper-content-wrapper]',
+      );
 
-      if (!keepSelection) {
+      if (!keepSelection && !popoverIsOpened) {
         deselectShapes();
+        closeContextMenu();
       }
     };
 

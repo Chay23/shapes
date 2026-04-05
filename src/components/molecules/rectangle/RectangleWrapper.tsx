@@ -11,8 +11,8 @@ import {
 } from '../../../lib/constants/common';
 import type { s } from '../../../types';
 import ResizeShapeButton from '../../atoms/ResizeShapeButton';
-import { useIsShapeSelected } from '@/store/selectors';
-import ShapeWrapper from '../ShapeWrapper';
+import ShapeWrapper from '../shape-wrapper';
+import { useIsShapeSelected } from '@/store/shapes/selectors';
 
 type Props = {
   rectangle: s.Rectangle;

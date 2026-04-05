@@ -1,4 +1,4 @@
-import { useSelectedShape } from '@/store/selectors';
+import { useSelectedShape } from '@/store/shapes/selectors';
 import { TYPE_RECTANGLE } from '../../../lib/constants/common';
 import RectangleEditor from './RectangleEditor';
 

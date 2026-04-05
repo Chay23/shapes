@@ -1,5 +1,5 @@
 import { getUpdatedRectangle } from '@/lib/utils/rectangle';
-import { useShapes } from '../store/shapes';
+import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 
 type Props = {
