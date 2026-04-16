@@ -1,19 +1,21 @@
 import { getUpdatedRectangle } from '@/lib/utils/rectangle';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
+import type { DirectionKey } from '@/types/shapes';
 
 type Props = {
   rectangle: s.Rectangle;
 };
 
 export default function useRectangleResize({ rectangle }: Props) {
-  const updateShape = useShapes((state) => state.updateShape);
+  const updateShape = useShapes(state => state.updateShape);
 
   const handleRectangleResize = (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => {
+    pointerDownEvent.stopPropagation();
     const element = pointerDownEvent.currentTarget;
-    const resizeSide = element.getAttribute('data-resize-side') || '';
+    const resizeSide = element.getAttribute('data-resize-side') as DirectionKey;
 
     element.setPointerCapture(pointerDownEvent.pointerId);
 

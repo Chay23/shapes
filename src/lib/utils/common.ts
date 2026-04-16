@@ -43,3 +43,32 @@ export const toolbarOptions = [
   { id: 'ellipse', component: Circle, dataType: TYPE_ELLIPSE },
   { id: 'text', component: Type, dataType: TYPE_TEXT },
 ];
+
+export const getRotationAngle = (
+  cx: number,
+  cy: number,
+  pointerX: number,
+  pointerY: number,
+) => {
+  return Math.atan2(pointerY - cy, pointerX - cx) * (180 / Math.PI);
+};
+
+export function toRad(angle: number) {
+  return (angle * Math.PI) / 180;
+}
+
+export function getLocalXAxisStep(rad: number) {
+  return { x: Math.cos(rad), y: Math.sin(rad) };
+}
+
+export function getLocalYAxisStep(rad: number) {
+  return { x: -Math.sin(rad), y: Math.cos(rad) };
+}
+
+export function getAxisMovement(
+  dx: number,
+  dy: number,
+  axis: { x: number; y: number },
+) {
+  return dx * axis.x + dy * axis.y;
+}

@@ -1,22 +1,22 @@
+import type { DirectionKey } from '@/types/shapes';
 import type { s } from '../../types';
 import {
   DEFAULT_FILL_COLOR,
   DEFAULT_STROKE_COLOR,
   DEFAULT_STROKE_WIDTH,
-  EAST_RESIZE,
-  NORTH_EAST_RESIZE,
-  NORTH_RESIZE,
-  NORTH_WEST_RESIZE,
-  SOUTH_EAST_RESIZE,
-  SOUTH_RESIZE,
-  SOUTH_WEST_RESIZE,
+  DIRECTION_MAP,
   TYPE_RECTANGLE,
-  WEST_RESIZE,
 } from '../constants/common';
 import {
   DEFAULT_TYPE_RECTANGLE_H,
   DEFAULT_TYPE_RECTANGLE_W,
 } from '../constants/rectangle';
+import {
+  getAxisMovement,
+  getLocalXAxisStep,
+  getLocalYAxisStep,
+  toRad,
+} from './common';
 
 export const constructRectangle = (
   id: string,
@@ -32,308 +32,72 @@ export const constructRectangle = (
   width: DEFAULT_TYPE_RECTANGLE_W,
   x: x,
   y: y,
+  rotation: 0,
 });
 
-export function resizeNorth(
-  initialRectangle: s.Rectangle,
-  updatedHeight: number,
-  shiftY: number,
+export function getRectangleCenter(rect: s.Rectangle) {
+  return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+}
+
+export function resizeRectangle(
+  rect: s.Rectangle,
+  direction: s.AxisPoint,
+  xAxisStep: s.AxisPoint,
+  yAxisStep: s.AxisPoint,
+  xMovement: number,
+  yMovement: number,
 ) {
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      y: initialRectangle.y + initialRectangle.height,
-      height: Math.abs(updatedHeight),
-    };
-  }
+  const constrainedXMovement = xMovement * Math.abs(direction.x);
+  const constrainedYMovement = yMovement * Math.abs(direction.y);
+
+  const rawWidth = rect.width + direction.x * constrainedXMovement;
+  const rawHeight = rect.height + direction.y * constrainedYMovement;
+
+  const center = getRectangleCenter(rect);
+
+  const globalXChange =
+    (constrainedXMovement / 2) * xAxisStep.x +
+    (constrainedYMovement / 2) * yAxisStep.x;
+  const globalYChange =
+    (constrainedXMovement / 2) * xAxisStep.y +
+    (constrainedYMovement / 2) * yAxisStep.y;
+
+  const newCx = center.x + globalXChange;
+  const newCy = center.y + globalYChange;
+
+  const finalWidth = Math.abs(rawWidth);
+  const finalHeight = Math.abs(rawHeight);
 
   return {
-    ...initialRectangle,
-    y: initialRectangle.y + shiftY,
-    height: updatedHeight,
+    ...rect,
+    width: finalWidth,
+    height: finalHeight,
+    x: newCx - finalWidth / 2,
+    y: newCy - finalHeight / 2,
   };
-}
-
-export function resizeNorthEast(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-  updatedHeight: number,
-  shiftY: number,
-) {
-  if (updatedHeight <= 0 && updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + updatedWidth,
-      y: initialRectangle.y + initialRectangle.height,
-      height: Math.abs(updatedHeight),
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      y: initialRectangle.y + initialRectangle.height,
-      width: updatedWidth,
-      height: Math.abs(updatedHeight),
-    };
-  }
-
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + updatedWidth,
-      y: initialRectangle.y + shiftY,
-      height: updatedHeight,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return {
-    ...initialRectangle,
-    y: initialRectangle.y + shiftY,
-    width: updatedWidth,
-    height: updatedHeight,
-  };
-}
-
-export function resizeNorthWest(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-  updatedHeight: number,
-  shiftX: number,
-  shiftY: number,
-) {
-  if (updatedHeight <= 0 && updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + initialRectangle.width,
-      y: initialRectangle.y + initialRectangle.height,
-      height: Math.abs(updatedHeight),
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + shiftX,
-      y: initialRectangle.y + initialRectangle.height,
-      width: updatedWidth,
-      height: Math.abs(updatedHeight),
-    };
-  }
-
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + initialRectangle.width,
-      y: initialRectangle.y + shiftY,
-      height: updatedHeight,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return {
-    ...initialRectangle,
-    x: initialRectangle.x + shiftX,
-    y: initialRectangle.y + shiftY,
-    height: updatedHeight,
-    width: updatedWidth,
-  };
-}
-
-export function resizeEast(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-) {
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + updatedWidth,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return { ...initialRectangle, width: updatedWidth };
-}
-
-export function resizeSouthWest(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-  updatedHeight: number,
-  shiftX: number,
-) {
-  if (updatedHeight <= 0 && updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + initialRectangle.width,
-      y: initialRectangle.y + updatedHeight,
-      height: Math.abs(updatedHeight),
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + shiftX,
-      y: initialRectangle.y + updatedHeight,
-      width: updatedWidth,
-      height: Math.abs(updatedHeight),
-    };
-  }
-
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + initialRectangle.width,
-      height: updatedHeight,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return {
-    ...initialRectangle,
-    x: initialRectangle.x + shiftX,
-    height: updatedHeight,
-    width: updatedWidth,
-  };
-}
-
-export function resizeSouthEast(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-  updatedHeight: number,
-) {
-  if (updatedHeight <= 0 && updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + updatedWidth,
-      y: initialRectangle.y + updatedHeight,
-      height: Math.abs(updatedHeight),
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x,
-      y: initialRectangle.y + updatedHeight,
-      width: Math.abs(updatedWidth),
-      height: Math.abs(updatedHeight),
-    };
-  }
-
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + updatedWidth,
-      height: updatedHeight,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return {
-    ...initialRectangle,
-    height: updatedHeight,
-    width: updatedWidth,
-  };
-}
-
-export function resizeWest(
-  initialRectangle: s.Rectangle,
-  updatedWidth: number,
-  shiftX: number,
-) {
-  if (updatedWidth <= 0) {
-    return {
-      ...initialRectangle,
-      x: initialRectangle.x + initialRectangle.width,
-      width: Math.abs(updatedWidth),
-    };
-  }
-
-  return {
-    ...initialRectangle,
-    x: initialRectangle.x + shiftX,
-    width: updatedWidth,
-  };
-}
-
-export function resizeSouth(
-  initialRectangle: s.Rectangle,
-  updatedHeight: number,
-) {
-  if (updatedHeight <= 0) {
-    return {
-      ...initialRectangle,
-      y: initialRectangle.y + updatedHeight,
-      height: Math.abs(updatedHeight),
-    };
-  }
-  return { ...initialRectangle, height: updatedHeight };
 }
 
 export const getUpdatedRectangle = (
   initialRectangle: s.Rectangle,
-  resizeSide: string,
-  shiftX: number,
-  shiftY: number,
+  resizeSide: DirectionKey,
+  dx: number,
+  dy: number,
 ): s.Rectangle => {
-  const eastUpdatedWidth = initialRectangle.width + shiftX;
-  const westUpdatedWidth = initialRectangle.width - shiftX;
-  const southUpdatedHeight = initialRectangle.height + shiftY;
-  const northUpdatedHeight = initialRectangle.height - shiftY;
+  const handle = DIRECTION_MAP[resizeSide];
+  const rad = toRad(initialRectangle.rotation);
 
-  switch (resizeSide) {
-    case NORTH_RESIZE: {
-      return resizeNorth(initialRectangle, northUpdatedHeight, shiftY);
-    }
-    case NORTH_EAST_RESIZE: {
-      return resizeNorthEast(
-        initialRectangle,
-        eastUpdatedWidth,
-        northUpdatedHeight,
-        shiftY,
-      );
-    }
-    case NORTH_WEST_RESIZE: {
-      return resizeNorthWest(
-        initialRectangle,
-        westUpdatedWidth,
-        northUpdatedHeight,
-        shiftX,
-        shiftY,
-      );
-    }
-    case SOUTH_RESIZE: {
-      return resizeSouth(initialRectangle, southUpdatedHeight);
-    }
-    case SOUTH_EAST_RESIZE: {
-      return resizeSouthEast(
-        initialRectangle,
-        eastUpdatedWidth,
-        southUpdatedHeight,
-      );
-    }
-    case SOUTH_WEST_RESIZE: {
-      return resizeSouthWest(
-        initialRectangle,
-        westUpdatedWidth,
-        southUpdatedHeight,
-        shiftX,
-      );
-    }
-    case WEST_RESIZE: {
-      return resizeWest(initialRectangle, westUpdatedWidth, shiftX);
-    }
-    case EAST_RESIZE: {
-      return resizeEast(initialRectangle, eastUpdatedWidth);
-    }
-    default: {
-      return initialRectangle;
-    }
-  }
+  const localXAxisStep = getLocalXAxisStep(rad);
+  const localYAxisStep = getLocalYAxisStep(rad);
+
+  const localXAxisMovement = getAxisMovement(dx, dy, localXAxisStep);
+  const localYAxisMovement = getAxisMovement(dx, dy, localYAxisStep);
+
+  return resizeRectangle(
+    initialRectangle,
+    handle,
+    localXAxisStep,
+    localYAxisStep,
+    localXAxisMovement,
+    localYAxisMovement,
+  );
 };

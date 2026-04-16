@@ -21,7 +21,9 @@ export default function ShapeWrapper({ children }: Props) {
 
   return (
     <>
-      <g onContextMenu={handleContextMenuOpen}>{children}</g>
+      <g onContextMenu={handleContextMenuOpen} transform='translate(0.5, 0.5)'>
+        {children}
+      </g>
       {contextMenu && (
         <ShapeContextMenu
           open={contextMenu.open}

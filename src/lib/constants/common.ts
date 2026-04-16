@@ -14,11 +14,25 @@ export const RESIZE_CIRCLE_FILL = '#ffffff';
 export const RESIZE_CIRCLE_STROKE_COLOR = '#000000';
 export const RESIZE_CIRCLE_STROKE_WIDTH = 0.5;
 
-export const NORTH_RESIZE = 'north';
-export const NORTH_WEST_RESIZE = 'north-west';
-export const NORTH_EAST_RESIZE = 'north-east';
-export const SOUTH_RESIZE = 'south';
-export const SOUTH_WEST_RESIZE = 'south-west';
-export const SOUTH_EAST_RESIZE = 'south-east';
-export const WEST_RESIZE = 'west';
-export const EAST_RESIZE = 'east';
+export const NORTH_RESIZE = 'n';
+export const SOUTH_RESIZE = 's';
+export const WEST_RESIZE = 'w';
+export const EAST_RESIZE = 'e';
+export const NORTH_WEST_RESIZE = 'nw';
+export const NORTH_EAST_RESIZE = 'ne';
+export const SOUTH_WEST_RESIZE = 'sw';
+export const SOUTH_EAST_RESIZE = 'se';
+
+export const ROTATE_BTN_SIZE = 18;
+export const ROTATE_BTN_Y_SHIFT = 30;
+
+export const DIRECTION_MAP = {
+  [NORTH_RESIZE]: { x: 0, y: -1 },
+  [SOUTH_RESIZE]: { x: 0, y: 1 },
+  [EAST_RESIZE]: { x: 1, y: 0 },
+  [WEST_RESIZE]: { x: -1, y: 0 },
+  [NORTH_EAST_RESIZE]: { x: 1, y: -1 },
+  [NORTH_WEST_RESIZE]: { x: -1, y: -1 },
+  [SOUTH_EAST_RESIZE]: { x: 1, y: 1 },
+  [SOUTH_WEST_RESIZE]: { x: -1, y: 1 },
+};

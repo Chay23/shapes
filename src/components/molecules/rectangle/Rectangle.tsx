@@ -20,7 +20,7 @@ export default function Rectangle({ rect }: Props) {
         fill={rect.fill}
         stroke={rect.stroke}
         strokeWidth={rect.strokeWidth}
-      ></rect>
+        transform={`rotate(${rect.rotation} ${rect.x + rect.width / 2} ${rect.y + rect.height / 2})`}></rect>
     </g>
   );
 }
