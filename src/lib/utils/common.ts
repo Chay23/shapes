@@ -37,10 +37,10 @@ export const toolbarOptions = [
     component: Square,
     dataType: TYPE_RECTANGLE,
   },
+  { id: 'ellipse', component: Circle, dataType: TYPE_ELLIPSE },
   { id: 'triangle', component: Triangle, dataType: TYPE_TRIANGLE },
   { id: 'arrow', component: MoveRight, dataType: TYPE_ARROW },
   { id: 'line', component: Minus, dataType: TYPE_LINE },
-  { id: 'ellipse', component: Circle, dataType: TYPE_ELLIPSE },
   { id: 'text', component: Type, dataType: TYPE_TEXT },
 ];
 

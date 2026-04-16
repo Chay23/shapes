@@ -21,7 +21,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export function RectangleWrapper({ rectangle, children }: Props) {
+export default function RectangleWrapper({ rectangle, children }: Props) {
   const isShapeSelected = useIsShapeSelected(rectangle.id);
   const { handleRectangleResize } = useRectangleResize({
     rectangle,

@@ -14,6 +14,9 @@ export const RESIZE_CIRCLE_FILL = '#ffffff';
 export const RESIZE_CIRCLE_STROKE_COLOR = '#000000';
 export const RESIZE_CIRCLE_STROKE_WIDTH = 0.5;
 
+export const DEFAULT_ELLIPSE_RX = 60;
+export const DEFAULT_ELLIPSE_RY = 40;
+
 export const NORTH_RESIZE = 'n';
 export const SOUTH_RESIZE = 's';
 export const WEST_RESIZE = 'w';
