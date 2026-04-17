@@ -1,4 +1,4 @@
-import { TYPE_RECTANGLE } from '@/lib/constants/common';
+import { TYPE_ELLIPSE, TYPE_RECTANGLE } from '@/lib/constants/common';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 
@@ -31,6 +31,16 @@ export function useShapeTranslate(shape: s.Shapes) {
             ...shape,
             x: updatedRectX,
             y: updatedRectY,
+          });
+        }
+        case TYPE_ELLIPSE: {
+          const updatedEllipseCx = shape.cx + leftShift;
+          const updatedEllipseCy = shape.cy + topShift;
+
+          updateShape({
+            ...shape,
+            cx: updatedEllipseCx,
+            cy: updatedEllipseCy,
           });
         }
       }
