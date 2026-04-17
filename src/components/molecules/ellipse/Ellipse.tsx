@@ -1,3 +1,4 @@
+import { useShapeTranslate } from '@/hooks/useShapeTranslate';
 import type { s } from '@/types';
 
 type Props = {
@@ -5,10 +6,13 @@ type Props = {
 };
 
 export default function Ellipse({ ellipse }: Props) {
+  const { handleShapeTranslate } = useShapeTranslate(ellipse);
+
   return (
-    <g>
+    <g onPointerDown={handleShapeTranslate}>
       <ellipse
         data-keep-selection
+        className='cursor-pointer'
         cx={ellipse.cx}
         cy={ellipse.cy}
         rx={ellipse.rx}
@@ -16,6 +20,7 @@ export default function Ellipse({ ellipse }: Props) {
         fill={ellipse.fill}
         stroke={ellipse.stroke}
         strokeWidth={ellipse.strokeWidth}
+        transform={`rotate(${ellipse.rotation} ${ellipse.cx} ${ellipse.cy})`}
       />
     </g>
   );

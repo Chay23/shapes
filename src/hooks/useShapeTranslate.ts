@@ -1,13 +1,13 @@
-import type { PointerEvent } from 'react';
+import { TYPE_RECTANGLE } from '@/lib/constants/common';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 
 export function useShapeTranslate(shape: s.Shapes) {
-  const updateShape = useShapes((state) => state.updateShape);
-  const selectShape = useShapes((state) => state.selectShape);
-  const deselectShapes = useShapes((state) => state.deselectShapes);
+  const updateShape = useShapes(state => state.updateShape);
+  const selectShape = useShapes(state => state.selectShape);
+  const deselectShapes = useShapes(state => state.deselectShapes);
 
-  const handlePointerDown = (e: PointerEvent<SVGGElement>) => {
+  const handleShapeTranslate = (e: React.PointerEvent<SVGGElement>) => {
     deselectShapes();
     selectShape(shape);
     const startX = e.clientX;
@@ -23,11 +23,11 @@ export function useShapeTranslate(shape: s.Shapes) {
       const topShift = e.clientY - startY;
 
       switch (shape.type) {
-        case 'rectangle': {
+        case TYPE_RECTANGLE: {
           const updatedRectX = shape.x + leftShift;
           const updatedRectY = shape.y + topShift;
 
-          updateShape({
+          return updateShape({
             ...shape,
             x: updatedRectX,
             y: updatedRectY,
@@ -45,5 +45,5 @@ export function useShapeTranslate(shape: s.Shapes) {
     });
   };
 
-  return { handlePointerDown };
+  return { handleShapeTranslate };
 }

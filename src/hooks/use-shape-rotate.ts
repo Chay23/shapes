@@ -1,17 +1,21 @@
-import { getRotationAngle } from '@/lib/utils/common';
+import {
+  getRotationAngle,
+  getShapeCenterXPoint,
+  getShapeCenterYPoint,
+} from '@/lib/utils/common';
 import { useShapes } from '@/store/shapes/shapes';
 import type { s } from '@/types';
 import { useRef } from 'react';
 
 type Props = {
-  initialRectangle: s.Rectangle;
+  initialShape: s.Shapes;
 };
 
-export default function useShapeRotate({ initialRectangle }: Props) {
+export default function useShapeRotate({ initialShape }: Props) {
   const startRotationRef = useRef(0);
 
-  const cx = initialRectangle.x + initialRectangle.width / 2;
-  const cy = initialRectangle.y + initialRectangle.height / 2;
+  const cx = getShapeCenterXPoint(initialShape);
+  const cy = getShapeCenterYPoint(initialShape);
 
   const updateShape = useShapes(state => state.updateShape);
 
@@ -22,7 +26,7 @@ export default function useShapeRotate({ initialRectangle }: Props) {
 
     element.setPointerCapture(event.pointerId);
     const startAngle = getRotationAngle(cx, cy, startX, startY);
-    startRotationRef.current = initialRectangle.rotation;
+    startRotationRef.current = initialShape.rotation;
 
     const onPointerMove = (event: PointerEvent) => {
       const currentAngle = getRotationAngle(
@@ -34,7 +38,7 @@ export default function useShapeRotate({ initialRectangle }: Props) {
       const delta = currentAngle - startAngle;
 
       updateShape({
-        ...initialRectangle,
+        ...initialShape,
         rotation: startRotationRef.current + delta,
       });
     };
@@ -51,7 +55,7 @@ export default function useShapeRotate({ initialRectangle }: Props) {
 
   const resetShapeRotation = () => {
     updateShape({
-      ...initialRectangle,
+      ...initialShape,
       rotation: 0,
     });
   };

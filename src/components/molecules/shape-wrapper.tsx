@@ -4,13 +4,33 @@ import {
   useOpenContextMenu,
 } from '@/store/contextMenu/selectors';
 import useShapeDeleteKey from '@/hooks/useShapeDeleteKey';
+import { useIsShapeSelected } from '@/store/shapes/selectors';
+import useRectangleResize from '@/hooks/use-shape-resize';
+import type { s } from '@/types';
+import useShapeRotate from '@/hooks/use-shape-rotate';
+import RotateButton from '../atoms/rotate-button';
+import ResizeShapeButton from '../atoms/ResizeShapeButton';
+import {
+  getShapeCenterXPoint,
+  getShapeCenterYPoint,
+  getWrapperResizePosition,
+} from '@/lib/utils/common';
+import ShapeOutline from './shape-outline';
 
 type Props = {
+  shape: s.Shapes;
   children: React.ReactNode;
 };
 
-export default function ShapeWrapper({ children }: Props) {
+export default function ShapeWrapper({ shape, children }: Props) {
   useShapeDeleteKey();
+  const isShapeSelected = useIsShapeSelected(shape.id);
+  const { handleRectangleResize } = useRectangleResize({
+    initialShape: shape,
+  });
+  const { handleShapeRotate } = useShapeRotate({
+    initialShape: shape,
+  });
   const contextMenu = useContextMenu();
   const openContextMenu = useOpenContextMenu();
 
@@ -18,6 +38,14 @@ export default function ShapeWrapper({ children }: Props) {
     e.preventDefault();
     openContextMenu(e.clientX, e.clientY);
   };
+
+  const shapeCenterX = getShapeCenterXPoint(shape);
+  const shapeCenterY = getShapeCenterYPoint(shape);
+
+  const wrapperResizePositions = getWrapperResizePosition(
+    shape,
+    handleRectangleResize,
+  );
 
   return (
     <>
@@ -30,6 +58,21 @@ export default function ShapeWrapper({ children }: Props) {
           x={contextMenu.x}
           y={contextMenu.y}
         />
+      )}
+
+      {isShapeSelected && (
+        <g>
+          <g
+            data-keep-selection={true}
+            className='cursor-pointer'
+            transform={`rotate(${shape.rotation} ${shapeCenterX} ${shapeCenterY})`}>
+            <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
+            <ShapeOutline shape={shape} />
+            {wrapperResizePositions.map(props => {
+              return <ResizeShapeButton {...props} />;
+            })}
+          </g>
+        </g>
       )}
     </>
   );

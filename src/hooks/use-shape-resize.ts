@@ -4,10 +4,10 @@ import type { s } from '../types';
 import type { DirectionKey } from '@/types/shapes';
 
 type Props = {
-  rectangle: s.Rectangle;
+  initialShape: s.Shapes;
 };
 
-export default function useRectangleResize({ rectangle }: Props) {
+export default function useShapeResize({ initialShape }: Props) {
   const updateShape = useShapes(state => state.updateShape);
 
   const handleRectangleResize = (
@@ -31,7 +31,7 @@ export default function useRectangleResize({ rectangle }: Props) {
         const shiftY = pointerMoveEvent.clientY - pressStartY;
 
         const updatedRectangle = getUpdatedRectangle(
-          rectangle,
+          initialShape,
           resizeSide,
           shiftX,
           shiftY,

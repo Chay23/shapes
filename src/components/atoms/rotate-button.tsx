@@ -1,20 +1,27 @@
 import { ROTATE_BTN_SIZE, ROTATE_BTN_Y_SHIFT } from '@/lib/constants/common';
+import {
+  getShapeCenterXPoint,
+  getShapeCenterYPoint,
+  getShapeHeight,
+} from '@/lib/utils/common';
+import type { s } from '@/types';
 import { RotateCcw } from 'lucide-react';
 
 type Props = React.SVGProps<SVGCircleElement> & {
-  cx: number;
-  cy: number;
-  height?: number;
-  width?: number;
-  r?: number;
+  shape: s.Shapes;
 };
 
 const BACKGROUND_CIRCLE_Y_SHIFT = 22;
 
 export default function RotateButton(props: Props) {
-  const cx = props.cx || 0;
-  const cy = props.cy || 0;
-  const shiftY = props.height ? props.height / 2 : props.r || 0;
+  const shapeCenterX = getShapeCenterXPoint(props.shape);
+  const shapeCenterY = getShapeCenterYPoint(props.shape);
+
+  const shapeHeight = getShapeHeight(props.shape);
+
+  const cx = shapeCenterX || 0;
+  const cy = shapeCenterY || 0;
+  const shiftY = shapeHeight / 2 || 0;
 
   return (
     <>

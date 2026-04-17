@@ -1,15 +1,19 @@
 import type { s } from '../../../types';
 import { useShapeTranslate } from '../../../hooks/useShapeTranslate';
+import { getShapeCenterXPoint, getShapeCenterYPoint } from '@/lib/utils/common';
 
 type Props = {
   rect: s.Rectangle;
 };
 
 export default function Rectangle({ rect }: Props) {
-  const { handlePointerDown } = useShapeTranslate(rect);
+  const { handleShapeTranslate } = useShapeTranslate(rect);
+
+  const shapeCenterX = getShapeCenterXPoint(rect);
+  const shapeCenterY = getShapeCenterYPoint(rect);
 
   return (
-    <g onPointerDown={handlePointerDown}>
+    <g onPointerDown={handleShapeTranslate}>
       <rect
         data-keep-selection={true}
         className='cursor-pointer'
@@ -20,7 +24,7 @@ export default function Rectangle({ rect }: Props) {
         fill={rect.fill}
         stroke={rect.stroke}
         strokeWidth={rect.strokeWidth}
-        transform={`rotate(${rect.rotation} ${rect.x + rect.width / 2} ${rect.y + rect.height / 2})`}></rect>
+        transform={`rotate(${rect.rotation} ${shapeCenterX} ${shapeCenterY})`}></rect>
     </g>
   );
 }
