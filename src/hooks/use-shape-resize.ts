@@ -1,4 +1,4 @@
-import { getUpdatedRectangle } from '@/lib/utils/rectangle';
+import { getResizedShape } from '@/lib/utils/common';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 import type { DirectionKey } from '@/types/shapes';
@@ -30,7 +30,7 @@ export default function useShapeResize({ initialShape }: Props) {
         const shiftX = pointerMoveEvent.clientX - pressStartX;
         const shiftY = pointerMoveEvent.clientY - pressStartY;
 
-        const updatedRectangle = getUpdatedRectangle(
+        const updatedRectangle = getResizedShape(
           initialShape,
           resizeSide,
           shiftX,

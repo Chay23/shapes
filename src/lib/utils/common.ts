@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import {
+  DIRECTION_MAP,
   EAST_RESIZE,
   NORTH_EAST_RESIZE,
   NORTH_RESIZE,
@@ -27,6 +28,7 @@ import {
   WEST_RESIZE,
 } from '../constants/common';
 import type { s } from '@/types';
+import type { AxisPoint, DirectionKey } from '@/types/shapes';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -97,19 +99,21 @@ export function getShapeHeight(shape: s.Shapes) {
   return shape.ry * 2;
 }
 
-export function getRectangleResizePoints(
-  rectangle: s.Rectangle,
+export default function getShapeResizePoints(
+  shape: s.Shapes,
   resizeHandler: (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => void,
 ) {
-  const middleResizePositionX = rectangle.x + rectangle.width / 2;
-  const middleResizePositionY = rectangle.y + rectangle.height / 2;
+  const shapeWidth = getShapeWidth(shape);
+  const shapeHeight = getShapeHeight(shape);
 
-  const eastResizePositionX = rectangle.x + rectangle.width;
-  const southResizePositionY = rectangle.y + rectangle.height;
-  const topResizePositionX = rectangle.x;
-  const topResizePositionY = rectangle.y;
+  const middleResizePositionX = getShapeCenterXPoint(shape);
+  const middleResizePositionY = getShapeCenterYPoint(shape);
+  const rightResizePositionX = middleResizePositionX + shapeWidth / 2;
+  const bottomResizePositionY = middleResizePositionY + shapeHeight / 2;
+  const leftResizePositionX = middleResizePositionX - shapeWidth / 2;
+  const topResizePositionY = middleResizePositionY - shapeHeight / 2;
 
   return [
     {
@@ -121,49 +125,49 @@ export function getRectangleResizePoints(
     },
     {
       cx: middleResizePositionX,
-      cy: southResizePositionY,
+      cy: bottomResizePositionY,
       'data-resize-side': SOUTH_RESIZE,
       className: 'cursor-s-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: eastResizePositionX,
+      cx: rightResizePositionX,
       cy: middleResizePositionY,
       'data-resize-side': EAST_RESIZE,
       className: 'cursor-e-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: topResizePositionX,
+      cx: leftResizePositionX,
       cy: middleResizePositionY,
       'data-resize-side': WEST_RESIZE,
       className: 'cursor-w-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: topResizePositionX,
+      cx: leftResizePositionX,
       cy: topResizePositionY,
       'data-resize-side': NORTH_WEST_RESIZE,
       className: 'cursor-nw-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: eastResizePositionX,
+      cx: rightResizePositionX,
       cy: topResizePositionY,
       'data-resize-side': NORTH_EAST_RESIZE,
       className: 'cursor-ne-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: topResizePositionX,
-      cy: southResizePositionY,
+      cx: leftResizePositionX,
+      cy: bottomResizePositionY,
       'data-resize-side': SOUTH_WEST_RESIZE,
       className: 'cursor-sw-resize resize-btn',
       onPointerDown: resizeHandler,
     },
     {
-      cx: eastResizePositionX,
-      cy: southResizePositionY,
+      cx: rightResizePositionX,
+      cy: bottomResizePositionY,
       'data-resize-side': SOUTH_EAST_RESIZE,
       className: 'cursor-se-resize resize-btn',
       onPointerDown: resizeHandler,
@@ -179,10 +183,14 @@ export function getWrapperResizePosition(
 ) {
   switch (shape.type) {
     case TYPE_RECTANGLE: {
-      return getRectangleResizePoints(shape, resizeHandler);
+      return getShapeResizePoints(shape, resizeHandler);
     }
+    case TYPE_ELLIPSE: {
+      return getShapeResizePoints(shape, resizeHandler);
+    }
+    default:
+      return [];
   }
-  return [];
 }
 
 export const getRotationAngle = (
@@ -206,10 +214,86 @@ export function getLocalYAxisStep(rad: number) {
   return { x: -Math.sin(rad), y: Math.cos(rad) };
 }
 
-export function getAxisMovement(
-  dx: number,
-  dy: number,
-  axis: { x: number; y: number },
-) {
+export function getAxisMovement(dx: number, dy: number, axis: AxisPoint) {
   return dx * axis.x + dy * axis.y;
 }
+
+export function resizeShape(
+  shape: s.Shapes,
+  direction: s.AxisPoint,
+  xAxisStep: s.AxisPoint,
+  yAxisStep: s.AxisPoint,
+  xMovement: number,
+  yMovement: number,
+) {
+  const shapeWidth = getShapeWidth(shape);
+  const shapeHeight = getShapeHeight(shape);
+
+  const constrainedXMovement = xMovement * Math.abs(direction.x);
+  const constrainedYMovement = yMovement * Math.abs(direction.y);
+
+  const rawWidth = shapeWidth + direction.x * constrainedXMovement;
+  const rawHeight = shapeHeight + direction.y * constrainedYMovement;
+
+  const centerX = getShapeCenterXPoint(shape);
+  const centerY = getShapeCenterYPoint(shape);
+
+  const globalXChange =
+    (constrainedXMovement / 2) * xAxisStep.x +
+    (constrainedYMovement / 2) * yAxisStep.x;
+  const globalYChange =
+    (constrainedXMovement / 2) * xAxisStep.y +
+    (constrainedYMovement / 2) * yAxisStep.y;
+
+  const newCx = centerX + globalXChange;
+  const newCy = centerY + globalYChange;
+
+  const finalWidth = Math.abs(rawWidth);
+  const finalHeight = Math.abs(rawHeight);
+
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return {
+        ...shape,
+        width: finalWidth,
+        height: finalHeight,
+        x: newCx - finalWidth / 2,
+        y: newCy - finalHeight / 2,
+      };
+    }
+    case TYPE_ELLIPSE: {
+      return {
+        ...shape,
+        rx: finalWidth / 2,
+        ry: finalHeight / 2,
+        cx: newCx,
+        cy: newCy,
+      };
+    }
+  }
+}
+
+export const getResizedShape = (
+  initialShape: s.Shapes,
+  resizeSide: DirectionKey,
+  dx: number,
+  dy: number,
+): s.Shapes => {
+  const handle = DIRECTION_MAP[resizeSide];
+  const rad = toRad(initialShape.rotation);
+
+  const localXAxisStep = getLocalXAxisStep(rad);
+  const localYAxisStep = getLocalYAxisStep(rad);
+
+  const localXAxisMovement = getAxisMovement(dx, dy, localXAxisStep);
+  const localYAxisMovement = getAxisMovement(dx, dy, localYAxisStep);
+
+  return resizeShape(
+    initialShape,
+    handle,
+    localXAxisStep,
+    localYAxisStep,
+    localXAxisMovement,
+    localYAxisMovement,
+  );
+};
