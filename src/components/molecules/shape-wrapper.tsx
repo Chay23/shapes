@@ -69,7 +69,9 @@ export default function ShapeWrapper({ shape, children }: Props) {
             <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
             <ShapeOutline shape={shape} />
             {wrapperResizePositions.map(props => {
-              return <ResizeShapeButton {...props} />;
+              return (
+                <ResizeShapeButton key={props['data-resize-side']} {...props} />
+              );
             })}
           </g>
         </g>

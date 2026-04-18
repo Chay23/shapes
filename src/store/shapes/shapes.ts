@@ -1,8 +1,13 @@
 import { create } from 'zustand';
 import type { ShapesStore } from '../../types/store/shapes';
-import { TYPE_ELLIPSE, TYPE_RECTANGLE } from '../../lib/constants/common';
+import {
+  TYPE_ELLIPSE,
+  TYPE_RECTANGLE,
+  TYPE_TRIANGLE,
+} from '../../lib/constants/common';
 import { constructRectangle } from '../../lib/utils/rectangle';
 import { constructEllipse } from '@/lib/utils/ellipse';
+import { constructTriangle } from '@/lib/utils/triangle';
 
 export const useShapes = create<ShapesStore>(set => ({
   shapes: new Map(),
@@ -18,6 +23,11 @@ export const useShapes = create<ShapesStore>(set => ({
         case TYPE_ELLIPSE:
           return {
             shapes: updatedShapes.set(id, constructEllipse(id, x, y)),
+          };
+
+        case TYPE_TRIANGLE:
+          return {
+            shapes: updatedShapes.set(id, constructTriangle(id, x, y)),
           };
         default:
           return { shapes: state.shapes };

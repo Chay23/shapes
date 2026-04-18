@@ -1,6 +1,7 @@
 import type { DIRECTION_MAP } from '@/lib/constants/common';
 import type { Rectangle } from './rectangle';
 import type { Ellipse } from './ellipse';
+import type { Triangle } from './triangle';
 
 export type BaseShape = {
   id: string;
@@ -15,8 +16,8 @@ export type Shape<S, T extends ShapeType> = BaseShape &
     type: T;
   };
 
-export type Shapes = Rectangle | Ellipse;
-export type ShapeType = 'rectangle' | 'ellipse';
+export type Shapes = Rectangle | Ellipse | Triangle;
+export type ShapeType = 'rectangle' | 'ellipse' | 'triangle';
 
 export type AxisPoint = {
   x: number;

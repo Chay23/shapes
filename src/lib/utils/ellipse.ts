@@ -3,6 +3,7 @@ import {
   DEFAULT_ELLIPSE_RX,
   DEFAULT_ELLIPSE_RY,
   DEFAULT_FILL_COLOR,
+  DEFAULT_ROTATION_ANGLE,
   DEFAULT_STROKE_COLOR,
   DEFAULT_STROKE_WIDTH,
   TYPE_ELLIPSE,
@@ -23,6 +24,6 @@ export function constructEllipse(
     cy: cy,
     rx: DEFAULT_ELLIPSE_RX,
     ry: DEFAULT_ELLIPSE_RY,
-    rotation: 0,
+    rotation: DEFAULT_ROTATION_ANGLE,
   };
 }

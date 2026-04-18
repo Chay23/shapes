@@ -14,8 +14,16 @@ export const RESIZE_CIRCLE_FILL = '#ffffff';
 export const RESIZE_CIRCLE_STROKE_COLOR = '#000000';
 export const RESIZE_CIRCLE_STROKE_WIDTH = 0.5;
 
+export const DEFAULT_ROTATION_ANGLE = 0;
+
+export const DEFAULT_TYPE_RECTANGLE_H = 50;
+export const DEFAULT_TYPE_RECTANGLE_W = 100;
+
 export const DEFAULT_ELLIPSE_RX = 60;
 export const DEFAULT_ELLIPSE_RY = 40;
+
+export const DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT = 70;
+export const DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT = 60;
 
 export const NORTH_RESIZE = 'n';
 export const SOUTH_RESIZE = 's';
