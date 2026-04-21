@@ -55,48 +55,96 @@ export const toolbarOptions = [
   { id: 'text', component: Type, dataType: TYPE_TEXT },
 ];
 
+export function getTriangleGeometry(triangle: s.Triangle) {
+  const xs = [triangle.x1, triangle.x2, triangle.x3];
+  const ys = [triangle.y1, triangle.y2, triangle.y3];
+  const maxX = Math.max(...xs);
+  const minX = Math.min(...xs);
+  const maxY = Math.max(...ys);
+  const minY = Math.min(...ys);
+
+  const width = maxX - minX;
+  const height = maxY - minY;
+
+  return { maxX, minX, maxY, minY, height, width };
+}
+
 export function getShapeCenterXPoint(shape: s.Shapes) {
-  if ('cx' in shape) {
-    return shape.cx;
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.x + shape.width / 2;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.cx;
+    }
   }
-  return shape.x + shape.width / 2;
 }
 
 export function getShapeCenterYPoint(shape: s.Shapes) {
-  if ('cy' in shape) {
-    return shape.cy;
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.y + shape.height / 2;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.cy;
+    }
   }
-  return shape.y + shape.height / 2;
 }
 
-export function getOutlineXPoint(shape: s.Shapes) {
-  if ('x' in shape) {
-    return shape.x;
+export function getBoundingBoxXPoint(shape: s.Shapes) {
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.x;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.cx - shape.rx;
+    }
+    case TYPE_TRIANGLE: {
+      return getTriangleGeometry(shape).minX;
+    }
   }
-  return shape.cx - shape.rx;
 }
 
-export function getOutlineYPoint(shape: s.Shapes) {
-  if ('y' in shape) {
-    return shape.y;
+export function getBoundingBoxYPoint(shape: s.Shapes) {
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.y;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.cy - shape.ry;
+    }
+    case TYPE_TRIANGLE: {
+      return getTriangleGeometry(shape).minY;
+    }
   }
-  return shape.cy - shape.ry;
 }
 
-export function getShapeWidth(shape: s.Shapes) {
-  if ('width' in shape) {
-    return shape.width;
+export function getBoundingBoxWidth(shape: s.Shapes) {
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.width;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.rx * 2;
+    }
+    case TYPE_TRIANGLE: {
+      return getTriangleGeometry(shape).width;
+    }
   }
-
-  return shape.rx * 2;
 }
 
-export function getShapeHeight(shape: s.Shapes) {
-  if ('height' in shape) {
-    return shape.height;
+export function getBoundingBoxHeight(shape: s.Shapes) {
+  switch (shape.type) {
+    case TYPE_RECTANGLE: {
+      return shape.height;
+    }
+    case TYPE_ELLIPSE: {
+      return shape.ry * 2;
+    }
+    case TYPE_TRIANGLE: {
+      return getTriangleGeometry(shape).height;
+    }
   }
-
-  return shape.ry * 2;
 }
 
 export default function getShapeResizePoints(
@@ -105,11 +153,11 @@ export default function getShapeResizePoints(
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => void,
 ) {
-  const shapeWidth = getShapeWidth(shape);
-  const shapeHeight = getShapeHeight(shape);
+  const shapeWidth = getBoundingBoxWidth(shape);
+  const shapeHeight = getBoundingBoxHeight(shape);
 
-  const middleResizePositionX = getShapeCenterXPoint(shape);
-  const middleResizePositionY = getShapeCenterYPoint(shape);
+  const middleResizePositionX = getBoundingBoxXPoint(shape) + shapeWidth / 2;
+  const middleResizePositionY = getBoundingBoxYPoint(shape) + shapeHeight / 2;
   const rightResizePositionX = middleResizePositionX + shapeWidth / 2;
   const bottomResizePositionY = middleResizePositionY + shapeHeight / 2;
   const leftResizePositionX = middleResizePositionX - shapeWidth / 2;
@@ -188,6 +236,9 @@ export function getWrapperResizePosition(
     case TYPE_ELLIPSE: {
       return getShapeResizePoints(shape, resizeHandler);
     }
+    case TYPE_TRIANGLE: {
+      return getShapeResizePoints(shape, resizeHandler);
+    }
     default:
       return [];
   }
@@ -226,8 +277,8 @@ export function resizeShape(
   xMovement: number,
   yMovement: number,
 ) {
-  const shapeWidth = getShapeWidth(shape);
-  const shapeHeight = getShapeHeight(shape);
+  const shapeWidth = getBoundingBoxWidth(shape);
+  const shapeHeight = getBoundingBoxHeight(shape);
 
   const constrainedXMovement = xMovement * Math.abs(direction.x);
   const constrainedYMovement = yMovement * Math.abs(direction.y);

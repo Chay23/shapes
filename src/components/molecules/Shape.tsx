@@ -29,7 +29,11 @@ export function Shape({ shape }: Props) {
       );
 
     case TYPE_TRIANGLE: {
-      return <Triangle triangle={shape} />;
+      return (
+        <ShapeWrapper shape={shape}>
+          <Triangle triangle={shape} />
+        </ShapeWrapper>
+      );
     }
     default:
       return null;

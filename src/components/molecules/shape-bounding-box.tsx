@@ -1,8 +1,8 @@
 import {
-  getOutlineXPoint,
-  getOutlineYPoint,
-  getShapeHeight,
-  getShapeWidth,
+  getBoundingBoxXPoint,
+  getBoundingBoxWidth,
+  getBoundingBoxHeight,
+  getBoundingBoxYPoint,
 } from '@/lib/utils/common';
 import type { s } from '@/types';
 
@@ -10,12 +10,12 @@ type Props = {
   shape: s.Shapes;
 };
 
-export default function ShapeOutline({ shape }: Props) {
-  const x = getOutlineXPoint(shape);
-  const y = getOutlineYPoint(shape);
+export default function ShapeBoundingBox({ shape }: Props) {
+  const x = getBoundingBoxXPoint(shape);
+  const y = getBoundingBoxYPoint(shape);
 
-  const width = getShapeWidth(shape);
-  const height = getShapeHeight(shape);
+  const width = getBoundingBoxWidth(shape);
+  const height = getBoundingBoxHeight(shape);
 
   return (
     <rect

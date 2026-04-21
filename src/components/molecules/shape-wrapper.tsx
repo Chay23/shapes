@@ -15,7 +15,7 @@ import {
   getShapeCenterYPoint,
   getWrapperResizePosition,
 } from '@/lib/utils/common';
-import ShapeOutline from './shape-outline';
+import ShapeBoundingBox from './shape-bounding-box';
 
 type Props = {
   shape: s.Shapes;
@@ -67,7 +67,7 @@ export default function ShapeWrapper({ shape, children }: Props) {
             className='cursor-pointer'
             transform={`rotate(${shape.rotation} ${shapeCenterX} ${shapeCenterY})`}>
             <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
-            <ShapeOutline shape={shape} />
+            <ShapeBoundingBox shape={shape} />
             {wrapperResizePositions.map(props => {
               return (
                 <ResizeShapeButton key={props['data-resize-side']} {...props} />

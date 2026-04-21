@@ -2,7 +2,7 @@ import { ROTATE_BTN_SIZE, ROTATE_BTN_Y_SHIFT } from '@/lib/constants/common';
 import {
   getShapeCenterXPoint,
   getShapeCenterYPoint,
-  getShapeHeight,
+  getBoundingBoxHeight,
 } from '@/lib/utils/common';
 import type { s } from '@/types';
 import { RotateCcw } from 'lucide-react';
@@ -17,11 +17,11 @@ export default function RotateButton(props: Props) {
   const shapeCenterX = getShapeCenterXPoint(props.shape);
   const shapeCenterY = getShapeCenterYPoint(props.shape);
 
-  const shapeHeight = getShapeHeight(props.shape);
+  const boundingBoxHeight = getBoundingBoxHeight(props.shape);
 
   const cx = shapeCenterX || 0;
   const cy = shapeCenterY || 0;
-  const shiftY = shapeHeight / 2 || 0;
+  const shiftY = boundingBoxHeight / 2 || 0;
 
   return (
     <>
