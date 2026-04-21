@@ -77,6 +77,9 @@ export function getShapeCenterXPoint(shape: s.Shapes) {
     case TYPE_ELLIPSE: {
       return shape.cx;
     }
+    case TYPE_TRIANGLE: {
+      return (shape.x1 + shape.x2 + shape.x3) / 3;
+    }
   }
 }
 
@@ -87,6 +90,9 @@ export function getShapeCenterYPoint(shape: s.Shapes) {
     }
     case TYPE_ELLIPSE: {
       return shape.cy;
+    }
+    case TYPE_TRIANGLE: {
+      return (shape.y1 + shape.y2 + shape.y3) / 3;
     }
   }
 }
