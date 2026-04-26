@@ -5,10 +5,11 @@ import { ButtonGroup } from '@/components/atoms/ButtonGroup';
 import { Button } from '@/components/atoms/Button';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
+import EditorCell from './EditorCell';
 
 export default function FillColorEditor() {
   const selectedShape = useSelectedShape() as s.Rectangle;
-  const updateShape = useShapes((state) => state.updateShape);
+  const updateShape = useShapes(state => state.updateShape);
   const [fill, setFill] = useState(selectedShape.fill);
   const colorPickerRef = useRef<HTMLInputElement>(null);
 
@@ -24,8 +25,7 @@ export default function FillColorEditor() {
   };
 
   return (
-    <article>
-      <h5>Fill</h5>
+    <EditorCell title={'Fill'}>
       <ButtonGroup className='flex'>
         <Input
           type='text'
@@ -44,9 +44,8 @@ export default function FillColorEditor() {
         <Button
           className='basis-2/12'
           style={{ backgroundColor: fill }}
-          onPointerDown={handleColorPickerOpen}
-        ></Button>
+          onPointerDown={handleColorPickerOpen}></Button>
       </ButtonGroup>
-    </article>
+    </EditorCell>
   );
 }

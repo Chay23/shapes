@@ -1,13 +1,24 @@
+import { Separator } from '@/components/atoms/Separator';
+import type { ui } from '@/types';
+
 type Props = {
-  title: React.ReactNode;
-  children: React.ReactNode;
+  editorOptions: ui.EditorGrid;
 };
 
-export function EditorGrid({ title, children }: Props) {
+export function EditorGrid({ editorOptions }: Props) {
+  const { title, components } = editorOptions;
   return (
     <section className='flex flex-col gap-2'>
       {typeof title === 'string' ? <h4>{title}</h4> : title}
-      {children}
+      {components.map(component => {
+        const { separator, render: EditorCell } = component;
+        return (
+          <>
+            <EditorCell />
+            {separator && <Separator />}
+          </>
+        );
+      })}
     </section>
   );
 }

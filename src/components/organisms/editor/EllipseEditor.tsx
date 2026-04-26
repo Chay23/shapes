@@ -1,14 +1,7 @@
-import { Separator } from '@/components/atoms/Separator';
 import { EditorGrid } from './EditorGrid';
-import ShapeSizeEditor from './ShapeSizeEditor';
-import StrokeWidthEditor from './StrokeWidthEditor';
+import { getEllipseEditor } from '@/lib/utils/ellipse';
 
 export default function EllipseEditor() {
-  return (
-    <EditorGrid title={'Ellipse'}>
-      <ShapeSizeEditor />
-      <Separator />
-      <StrokeWidthEditor />
-    </EditorGrid>
-  );
+  const ellipseEditorOptions = getEllipseEditor();
+  return <EditorGrid editorOptions={ellipseEditorOptions} />;
 }

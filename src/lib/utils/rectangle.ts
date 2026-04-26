@@ -1,4 +1,5 @@
-import type { s } from '../../types';
+import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
+import type { s, ui } from '../../types';
 import {
   DEFAULT_FILL_COLOR,
   DEFAULT_ROTATION_ANGLE,
@@ -8,6 +9,8 @@ import {
   DEFAULT_TYPE_RECTANGLE_W,
   TYPE_RECTANGLE,
 } from '../constants/common';
+import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
+import FillColorEditor from '@/components/organisms/editor/FillColorEditor';
 
 export const constructRectangle = (
   id: string,
@@ -25,3 +28,22 @@ export const constructRectangle = (
   y: y,
   rotation: DEFAULT_ROTATION_ANGLE,
 });
+
+export function getRectangleEditor(): ui.EditorGrid {
+  return {
+    title: 'Rectangle',
+    components: [
+      {
+        render: ShapeSizeEditor,
+        separator: true,
+      },
+      {
+        render: StrokeWidthEditor,
+        separator: true,
+      },
+      {
+        render: FillColorEditor,
+      },
+    ],
+  };
+}
