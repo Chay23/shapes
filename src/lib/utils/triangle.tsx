@@ -1,4 +1,4 @@
-import type { s } from '@/types';
+import type { s, ui } from '@/types';
 import {
   DEFAULT_FILL_COLOR,
   DEFAULT_ROTATION_ANGLE,
@@ -8,6 +8,9 @@ import {
   DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
   TYPE_TRIANGLE,
 } from '../constants/common';
+import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
+import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
+import FillColorEditor from '@/components/organisms/editor/FillColorEditor';
 
 export function constructTriangle(
   id: string,
@@ -35,5 +38,24 @@ export function constructTriangle(
       },
     ],
     rotation: DEFAULT_ROTATION_ANGLE,
+  };
+}
+
+export function getTriangleEditor(): ui.EditorGrid {
+  return {
+    title: 'Triangle',
+    components: [
+      {
+        render: ShapeSizeEditor,
+        separator: true,
+      },
+      {
+        render: StrokeWidthEditor,
+        separator: true,
+      },
+      {
+        render: FillColorEditor,
+      },
+    ],
   };
 }
