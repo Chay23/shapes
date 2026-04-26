@@ -1,14 +1,14 @@
-import SizeEditor from './RectangleSizeEditor';
+import ShapeSizeEditor from './ShapeSizeEditor';
 import StrokeWidthEditor from './StrokeWidthEditor';
 import FillColorEditor from './FillColorEditor';
+import { EditorGrid } from './EditorGrid';
 
 export default function RectangleEditor() {
   return (
-    <section className='flex flex-col gap-2'>
-      <h4>Rectangle</h4>
-      <SizeEditor />
+    <EditorGrid title={'Rectangle'}>
+      <ShapeSizeEditor />
       <StrokeWidthEditor />
       <FillColorEditor />
-    </section>
+    </EditorGrid>
   );
 }

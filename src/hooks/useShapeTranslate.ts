@@ -1,4 +1,3 @@
-import { TYPE_ELLIPSE, TYPE_RECTANGLE } from '@/lib/constants/common';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 import { translateShape } from '@/lib/utils/common';

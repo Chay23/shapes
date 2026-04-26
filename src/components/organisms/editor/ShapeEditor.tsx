@@ -1,6 +1,7 @@
 import { useSelectedShape } from '@/store/shapes/selectors';
-import { TYPE_RECTANGLE } from '../../../lib/constants/common';
+import { TYPE_ELLIPSE, TYPE_RECTANGLE } from '../../../lib/constants/common';
 import RectangleEditor from './RectangleEditor';
+import EllipseEditor from './EllipseEditor';
 
 export default function ShapeEditor() {
   const selectedShape = useSelectedShape();
@@ -12,6 +13,10 @@ export default function ShapeEditor() {
   switch (selectedShape.type) {
     case TYPE_RECTANGLE: {
       return <RectangleEditor />;
+    }
+
+    case TYPE_ELLIPSE: {
+      return <EllipseEditor />;
     }
   }
 }

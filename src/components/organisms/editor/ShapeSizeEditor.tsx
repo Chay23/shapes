@@ -5,6 +5,8 @@ import { Field, FieldLabel } from '@/components/atoms/Field';
 import { Separator } from '@/components/atoms/Separator';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
+import { getResizedShape, getShapeBoundingBox } from '@/lib/utils/common';
+import EditorCell from './EditorCell';
 
 type RectangleSize = {
   width: string | number;
@@ -13,26 +15,27 @@ type RectangleSize = {
 
 type InputName = 'width' | 'height';
 
-export default function RectangleSizeEditor() {
+export default function ShapeSizeEditor() {
   const selectedShape = useSelectedShape() as s.Rectangle;
-  const updateShape = useShapes((state) => state.updateShape);
+  const updateShape = useShapes(state => state.updateShape);
+  const boundingBox = getShapeBoundingBox(selectedShape);
 
   const [size, setSize] = useState<Partial<RectangleSize>>({});
 
-  const displayWidth = 'width' in size ? size.width : selectedShape.width;
-  const displayHeight = 'height' in size ? size.height : selectedShape.height;
+  const displayWidth = 'width' in size ? size.width : boundingBox.width;
+  const displayHeight = 'height' in size ? size.height : boundingBox.height;
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (value === '') {
-      return setSize((prevSize) => ({
+      return setSize(prevSize => ({
         ...prevSize,
         [name]: '',
       }));
     }
 
-    setSize((prevSize) => ({
+    setSize(prevSize => ({
       ...prevSize,
       [name]: parseFloat(value),
     }));
@@ -41,18 +44,20 @@ export default function RectangleSizeEditor() {
   const applySizeChange = (name: InputName, value: string) => {
     if (!selectedShape) return;
 
-    if (!value) {
-      setSize({});
-      return;
-    }
-
     setSize({});
 
-    if (name === 'height') {
-      updateShape({ ...selectedShape, height: parseFloat(value) });
+    if (!value) {
       return;
     }
-    updateShape({ ...selectedShape, width: parseFloat(value) });
+
+    const resizeSide: s.DirectionKey = name === 'width' ? 'e' : 's';
+
+    const dx = name === 'width' ? parseFloat(value) - boundingBox.width : 0;
+    const dy = name === 'height' ? parseFloat(value) - boundingBox.height : 0;
+
+    const updatedShape = getResizedShape(selectedShape, resizeSide, dx, dy);
+
+    updateShape(updatedShape);
   };
 
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,8 +75,7 @@ export default function RectangleSizeEditor() {
   };
 
   return (
-    <article>
-      <h5>Size</h5>
+    <EditorCell title={'Size'}>
       <div className='flex gap-3 py-2'>
         <Field className='flex-1'>
           <FieldLabel htmlFor='shape-height'>Height</FieldLabel>
@@ -96,7 +100,6 @@ export default function RectangleSizeEditor() {
           />
         </Field>
       </div>
-      <Separator />
-    </article>
+    </EditorCell>
   );
 }
