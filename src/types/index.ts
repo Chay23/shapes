@@ -1,2 +1,2 @@
 export * as s from './shapes';
-export * as ui from './UI';
+export * as ui from './UI'
