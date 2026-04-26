@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useShapes } from '../../../store/shapes/shapes';
 import { Input } from '@/components/atoms/Input';
 import { Field, FieldLabel } from '@/components/atoms/Field';
-import { Separator } from '@/components/atoms/Separator';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
 import { getResizedShape, getShapeBoundingBox } from '@/lib/utils/common';

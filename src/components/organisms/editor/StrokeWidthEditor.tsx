@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useShapes } from '../../../store/shapes/shapes';
 import { Slider } from '@/components/atoms/Slider';
-import { Separator } from '@/components/atoms/Separator';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
+import EditorCell from './EditorCell';
 
 export default function StrokeWidthEditor() {
   const selectedShape = useSelectedShape() as s.Rectangle;
-  const updateShape = useShapes((state) => state.updateShape);
+  const updateShape = useShapes(state => state.updateShape);
   const [strokeWidth, setStrokeWidth] = useState([selectedShape.strokeWidth]);
 
   const handleStrokeWidthChange = (values: number[]) => {
@@ -18,8 +18,7 @@ export default function StrokeWidthEditor() {
   };
 
   return (
-    <article>
-      <h5>Stroke</h5>
+    <EditorCell title={'Stroke'}>
       <div className='flex items-center gap-2 py-2'>
         <Slider
           min={0}
@@ -29,7 +28,6 @@ export default function StrokeWidthEditor() {
         />
         <span className='text-xs'>{strokeWidth}px</span>
       </div>
-      <Separator />
-    </article>
+    </EditorCell>
   );
 }
