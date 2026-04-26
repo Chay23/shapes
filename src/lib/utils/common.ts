@@ -377,3 +377,43 @@ export const getResizedShape = (
     }
   }
 };
+
+export function translateShape(
+  initialShape: s.Shapes,
+  leftShift: number,
+  topShift: number,
+) {
+  switch (initialShape.type) {
+    case TYPE_RECTANGLE: {
+      const updatedRectX = initialShape.x + leftShift;
+      const updatedRectY = initialShape.y + topShift;
+
+      return {
+        ...initialShape,
+        x: updatedRectX,
+        y: updatedRectY,
+      };
+    }
+    case TYPE_ELLIPSE: {
+      const updatedEllipseCx = initialShape.cx + leftShift;
+      const updatedEllipseCy = initialShape.cy + topShift;
+
+      return {
+        ...initialShape,
+        cx: updatedEllipseCx,
+        cy: updatedEllipseCy,
+      };
+    }
+    case TYPE_TRIANGLE: {
+      const updatedPoints = initialShape.points.map(point => ({
+        x: point.x + leftShift,
+        y: point.y + topShift,
+      }));
+
+      return {
+        ...initialShape,
+        points: updatedPoints,
+      };
+    }
+  }
+}

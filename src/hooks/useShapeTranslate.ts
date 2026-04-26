@@ -1,6 +1,7 @@
 import { TYPE_ELLIPSE, TYPE_RECTANGLE } from '@/lib/constants/common';
 import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
+import { translateShape } from '@/lib/utils/common';
 
 export function useShapeTranslate(shape: s.Shapes) {
   const updateShape = useShapes(state => state.updateShape);
@@ -22,28 +23,8 @@ export function useShapeTranslate(shape: s.Shapes) {
       const leftShift = e.clientX - startX;
       const topShift = e.clientY - startY;
 
-      switch (shape.type) {
-        case TYPE_RECTANGLE: {
-          const updatedRectX = shape.x + leftShift;
-          const updatedRectY = shape.y + topShift;
-
-          return updateShape({
-            ...shape,
-            x: updatedRectX,
-            y: updatedRectY,
-          });
-        }
-        case TYPE_ELLIPSE: {
-          const updatedEllipseCx = shape.cx + leftShift;
-          const updatedEllipseCy = shape.cy + topShift;
-
-          updateShape({
-            ...shape,
-            cx: updatedEllipseCx,
-            cy: updatedEllipseCy,
-          });
-        }
-      }
+      const updatedShape = translateShape(shape, leftShift, topShift);
+      updateShape(updatedShape);
     };
 
     element.addEventListener('pointermove', handleMove, {
