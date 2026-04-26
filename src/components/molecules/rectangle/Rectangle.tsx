@@ -1,6 +1,5 @@
 import type { s } from '../../../types';
 import { useShapeTranslate } from '../../../hooks/useShapeTranslate';
-import { getShapeCenterXPoint, getShapeCenterYPoint } from '@/lib/utils/common';
 
 type Props = {
   rect: s.Rectangle;
@@ -8,9 +7,6 @@ type Props = {
 
 export default function Rectangle({ rect }: Props) {
   const { handleShapeTranslate } = useShapeTranslate(rect);
-
-  const shapeCenterX = getShapeCenterXPoint(rect);
-  const shapeCenterY = getShapeCenterYPoint(rect);
 
   return (
     <g onPointerDown={handleShapeTranslate}>
@@ -24,7 +20,7 @@ export default function Rectangle({ rect }: Props) {
         fill={rect.fill}
         stroke={rect.stroke}
         strokeWidth={rect.strokeWidth}
-        transform={`rotate(${rect.rotation} ${shapeCenterX} ${shapeCenterY})`}></rect>
+      />
     </g>
   );
 }

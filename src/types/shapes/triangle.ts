@@ -1,12 +1,7 @@
-import type { Shape } from "./common";
+import type { AxisPoint, Shape } from './common';
 
 export type BaseTriangle = {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  x3: number;
-  y3: number;
+  points: AxisPoint[];
 };
 
 export type Triangle = Shape<BaseTriangle, 'triangle'>;

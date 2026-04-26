@@ -1,7 +1,7 @@
 import {
+  getBoundingBoxCenterXPoint,
+  getBoundingBoxCenterYPoint,
   getRotationAngle,
-  getShapeCenterXPoint,
-  getShapeCenterYPoint,
 } from '@/lib/utils/common';
 import { useShapes } from '@/store/shapes/shapes';
 import type { s } from '@/types';
@@ -13,11 +13,10 @@ type Props = {
 
 export default function useShapeRotate({ initialShape }: Props) {
   const startRotationRef = useRef(0);
-
-  const cx = getShapeCenterXPoint(initialShape);
-  const cy = getShapeCenterYPoint(initialShape);
-
   const updateShape = useShapes(state => state.updateShape);
+
+  const boundingBoxCenterX = getBoundingBoxCenterXPoint(initialShape);
+  const boundingBoxCenterY = getBoundingBoxCenterYPoint(initialShape);
 
   const handleShapeRotate = (event: React.PointerEvent<SVGElement>) => {
     const element = event.currentTarget;
@@ -25,13 +24,18 @@ export default function useShapeRotate({ initialShape }: Props) {
     const startY = event.clientY;
 
     element.setPointerCapture(event.pointerId);
-    const startAngle = getRotationAngle(cx, cy, startX, startY);
+    const startAngle = getRotationAngle(
+      boundingBoxCenterX,
+      boundingBoxCenterY,
+      startX,
+      startY,
+    );
     startRotationRef.current = initialShape.rotation;
 
     const onPointerMove = (event: PointerEvent) => {
       const currentAngle = getRotationAngle(
-        cx,
-        cy,
+        boundingBoxCenterX,
+        boundingBoxCenterY,
         event.clientX,
         event.clientY,
       );

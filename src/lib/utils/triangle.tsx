@@ -20,12 +20,20 @@ export function constructTriangle(
     stroke: DEFAULT_STROKE_COLOR,
     strokeWidth: DEFAULT_STROKE_WIDTH,
     fill: DEFAULT_FILL_COLOR,
-    x1: cx,
-    y1: cy - DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
-    x2: cx + DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT,
-    y2: cy + DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
-    x3: cx - DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT,
-    y3: cy + DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
+    points: [
+      {
+        x: cx,
+        y: cy - DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
+      },
+      {
+        x: cx + DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT,
+        y: cy + DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
+      },
+      {
+        x: cx - DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT,
+        y: cy + DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
+      },
+    ],
     rotation: DEFAULT_ROTATION_ANGLE,
   };
 }

@@ -11,8 +11,8 @@ import useShapeRotate from '@/hooks/use-shape-rotate';
 import RotateButton from '../atoms/rotate-button';
 import ResizeShapeButton from '../atoms/ResizeShapeButton';
 import {
-  getShapeCenterXPoint,
-  getShapeCenterYPoint,
+  getBoundingBoxCenterXPoint,
+  getBoundingBoxCenterYPoint,
   getWrapperResizePosition,
 } from '@/lib/utils/common';
 import ShapeBoundingBox from './shape-bounding-box';
@@ -39,8 +39,8 @@ export default function ShapeWrapper({ shape, children }: Props) {
     openContextMenu(e.clientX, e.clientY);
   };
 
-  const shapeCenterX = getShapeCenterXPoint(shape);
-  const shapeCenterY = getShapeCenterYPoint(shape);
+  const boundingBoxCenterX = getBoundingBoxCenterXPoint(shape);
+  const boundingBoxCenterY = getBoundingBoxCenterYPoint(shape);
 
   const wrapperResizePositions = getWrapperResizePosition(
     shape,
@@ -49,7 +49,9 @@ export default function ShapeWrapper({ shape, children }: Props) {
 
   return (
     <>
-      <g onContextMenu={handleContextMenuOpen} transform='translate(0.5, 0.5)'>
+      <g
+        onContextMenu={handleContextMenuOpen}
+        transform={`rotate(${shape.rotation} ${boundingBoxCenterX} ${boundingBoxCenterY})`}>
         {children}
       </g>
       {contextMenu && (
@@ -65,7 +67,7 @@ export default function ShapeWrapper({ shape, children }: Props) {
           <g
             data-keep-selection={true}
             className='cursor-pointer'
-            transform={`rotate(${shape.rotation} ${shapeCenterX} ${shapeCenterY})`}>
+            transform={`rotate(${shape.rotation} ${boundingBoxCenterX} ${boundingBoxCenterY})`}>
             <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
             <ShapeBoundingBox shape={shape} />
             {wrapperResizePositions.map(props => {

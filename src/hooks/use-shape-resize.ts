@@ -30,14 +30,14 @@ export default function useShapeResize({ initialShape }: Props) {
         const shiftX = pointerMoveEvent.clientX - pressStartX;
         const shiftY = pointerMoveEvent.clientY - pressStartY;
 
-        const updatedRectangle = getResizedShape(
+        const updatedShape = getResizedShape(
           initialShape,
           resizeSide,
           shiftX,
           shiftY,
         );
 
-        updateShape(updatedRectangle);
+        updateShape(updatedShape);
       },
       { signal: controller.signal },
     );

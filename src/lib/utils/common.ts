@@ -55,9 +55,34 @@ export const toolbarOptions = [
   { id: 'text', component: Type, dataType: TYPE_TEXT },
 ];
 
-export function getTriangleGeometry(triangle: s.Triangle) {
-  const xs = [triangle.x1, triangle.x2, triangle.x3];
-  const ys = [triangle.y1, triangle.y2, triangle.y3];
+export function getRectangleBoundingBox(rectangle: s.Rectangle) {
+  return {
+    width: rectangle.width,
+    height: rectangle.height,
+    minX: rectangle.x,
+    minY: rectangle.y,
+    maxX: rectangle.x + rectangle.width,
+    maxY: rectangle.y + rectangle.height,
+  };
+}
+
+export function getEllipseBoundingBox(ellipse: s.Ellipse) {
+  const height = ellipse.ry * 2;
+  const width = ellipse.rx * 2;
+  return {
+    width,
+    height,
+    minX: ellipse.cx - width / 2,
+    minY: ellipse.cy - height / 2,
+    maxX: ellipse.cx + width / 2,
+    maxY: ellipse.cy + height / 2,
+  };
+}
+
+export function getTriangleBoundingBox(triangle: s.Triangle) {
+  const { points } = triangle;
+  const xs = points.map(point => point.x);
+  const ys = points.map(point => point.y);
   const maxX = Math.max(...xs);
   const minX = Math.min(...xs);
   const maxY = Math.max(...ys);
@@ -69,7 +94,7 @@ export function getTriangleGeometry(triangle: s.Triangle) {
   return { maxX, minX, maxY, minY, height, width };
 }
 
-export function getShapeCenterXPoint(shape: s.Shapes) {
+export function getBoundingBoxCenterXPoint(shape: s.Shapes) {
   switch (shape.type) {
     case TYPE_RECTANGLE: {
       return shape.x + shape.width / 2;
@@ -78,12 +103,13 @@ export function getShapeCenterXPoint(shape: s.Shapes) {
       return shape.cx;
     }
     case TYPE_TRIANGLE: {
-      return (shape.x1 + shape.x2 + shape.x3) / 3;
+      const { minX, width } = getTriangleBoundingBox(shape);
+      return minX + width / 2;
     }
   }
 }
 
-export function getShapeCenterYPoint(shape: s.Shapes) {
+export function getBoundingBoxCenterYPoint(shape: s.Shapes) {
   switch (shape.type) {
     case TYPE_RECTANGLE: {
       return shape.y + shape.height / 2;
@@ -92,63 +118,8 @@ export function getShapeCenterYPoint(shape: s.Shapes) {
       return shape.cy;
     }
     case TYPE_TRIANGLE: {
-      return (shape.y1 + shape.y2 + shape.y3) / 3;
-    }
-  }
-}
-
-export function getBoundingBoxXPoint(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.x;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.cx - shape.rx;
-    }
-    case TYPE_TRIANGLE: {
-      return getTriangleGeometry(shape).minX;
-    }
-  }
-}
-
-export function getBoundingBoxYPoint(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.y;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.cy - shape.ry;
-    }
-    case TYPE_TRIANGLE: {
-      return getTriangleGeometry(shape).minY;
-    }
-  }
-}
-
-export function getBoundingBoxWidth(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.width;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.rx * 2;
-    }
-    case TYPE_TRIANGLE: {
-      return getTriangleGeometry(shape).width;
-    }
-  }
-}
-
-export function getBoundingBoxHeight(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.height;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.ry * 2;
-    }
-    case TYPE_TRIANGLE: {
-      return getTriangleGeometry(shape).height;
+      const { minY, height } = getTriangleBoundingBox(shape);
+      return minY + height / 2;
     }
   }
 }
@@ -159,15 +130,14 @@ export default function getShapeResizePoints(
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => void,
 ) {
-  const shapeWidth = getBoundingBoxWidth(shape);
-  const shapeHeight = getBoundingBoxHeight(shape);
+  const boundingBox = getShapeBoundingBox(shape);
 
-  const middleResizePositionX = getBoundingBoxXPoint(shape) + shapeWidth / 2;
-  const middleResizePositionY = getBoundingBoxYPoint(shape) + shapeHeight / 2;
-  const rightResizePositionX = middleResizePositionX + shapeWidth / 2;
-  const bottomResizePositionY = middleResizePositionY + shapeHeight / 2;
-  const leftResizePositionX = middleResizePositionX - shapeWidth / 2;
-  const topResizePositionY = middleResizePositionY - shapeHeight / 2;
+  const middleResizePositionX = boundingBox.minX + boundingBox.width / 2;
+  const middleResizePositionY = boundingBox.minY + boundingBox.height / 2;
+  const rightResizePositionX = boundingBox.maxX;
+  const bottomResizePositionY = boundingBox.maxY;
+  const leftResizePositionX = boundingBox.minX;
+  const topResizePositionY = boundingBox.minY;
 
   return [
     {
@@ -275,25 +245,22 @@ export function getAxisMovement(dx: number, dy: number, axis: AxisPoint) {
   return dx * axis.x + dy * axis.y;
 }
 
-export function resizeShape(
-  shape: s.Shapes,
+export function resizeBoundingBox(
+  boundingBox: s.BoundingBox,
   direction: s.AxisPoint,
   xAxisStep: s.AxisPoint,
   yAxisStep: s.AxisPoint,
   xMovement: number,
   yMovement: number,
 ) {
-  const shapeWidth = getBoundingBoxWidth(shape);
-  const shapeHeight = getBoundingBoxHeight(shape);
-
   const constrainedXMovement = xMovement * Math.abs(direction.x);
   const constrainedYMovement = yMovement * Math.abs(direction.y);
 
-  const rawWidth = shapeWidth + direction.x * constrainedXMovement;
-  const rawHeight = shapeHeight + direction.y * constrainedYMovement;
+  const rawWidth = boundingBox.width + direction.x * constrainedXMovement;
+  const rawHeight = boundingBox.height + direction.y * constrainedYMovement;
 
-  const centerX = getShapeCenterXPoint(shape);
-  const centerY = getShapeCenterYPoint(shape);
+  const centerX = boundingBox.minX + boundingBox.width / 2;
+  const centerY = boundingBox.minY + boundingBox.height / 2;
 
   const globalXChange =
     (constrainedXMovement / 2) * xAxisStep.x +
@@ -308,26 +275,47 @@ export function resizeShape(
   const finalWidth = Math.abs(rawWidth);
   const finalHeight = Math.abs(rawHeight);
 
+  return {
+    width: finalWidth,
+    height: finalHeight,
+    minX: newCx - finalWidth / 2,
+    minY: newCy - finalHeight / 2,
+    maxX: newCx + finalWidth / 2,
+    maxY: newCy + finalHeight / 2,
+  };
+}
+
+export function getShapeBoundingBox(shape: s.Shapes) {
   switch (shape.type) {
     case TYPE_RECTANGLE: {
-      return {
-        ...shape,
-        width: finalWidth,
-        height: finalHeight,
-        x: newCx - finalWidth / 2,
-        y: newCy - finalHeight / 2,
-      };
+      return getRectangleBoundingBox(shape);
     }
     case TYPE_ELLIPSE: {
-      return {
-        ...shape,
-        rx: finalWidth / 2,
-        ry: finalHeight / 2,
-        cx: newCx,
-        cy: newCy,
-      };
+      return getEllipseBoundingBox(shape);
+    }
+    case TYPE_TRIANGLE: {
+      return getTriangleBoundingBox(shape);
     }
   }
+}
+
+function denormalizeTriangle(
+  points: s.AxisPoint[],
+  box: s.BoundingBox,
+): s.AxisPoint[] {
+  return points.map(point => ({
+    x: box.minX + point.x * (box.maxX - box.minX),
+    y: box.minY + point.y * (box.maxY - box.minY),
+  }));
+}
+
+function normalizeTriangle(triangle: s.Triangle) {
+  const box = getTriangleBoundingBox(triangle);
+
+  return triangle.points.map(point => ({
+    x: (point.x - box.minX) / box.width,
+    y: (point.y - box.minY) / box.height,
+  }));
 }
 
 export const getResizedShape = (
@@ -345,12 +333,47 @@ export const getResizedShape = (
   const localXAxisMovement = getAxisMovement(dx, dy, localXAxisStep);
   const localYAxisMovement = getAxisMovement(dx, dy, localYAxisStep);
 
-  return resizeShape(
-    initialShape,
+  const box = getShapeBoundingBox(initialShape);
+
+  const resizedBox = resizeBoundingBox(
+    box,
     handle,
     localXAxisStep,
     localYAxisStep,
     localXAxisMovement,
     localYAxisMovement,
   );
+
+  switch (initialShape.type) {
+    case TYPE_RECTANGLE: {
+      return {
+        ...initialShape,
+        x: resizedBox.minX,
+        y: resizedBox.minY,
+        width: resizedBox.maxX - resizedBox.minX,
+        height: resizedBox.maxY - resizedBox.minY,
+      };
+    }
+    case TYPE_ELLIPSE: {
+      return {
+        ...initialShape,
+        rx: resizedBox.width / 2,
+        ry: resizedBox.height / 2,
+        cx: resizedBox.minX + resizedBox.width / 2,
+        cy: resizedBox.minY + resizedBox.height / 2,
+      };
+    }
+    case TYPE_TRIANGLE: {
+      const normalizedPoints = normalizeTriangle(initialShape);
+      const newTrianglePoints = denormalizeTriangle(
+        normalizedPoints,
+        resizedBox,
+      );
+
+      return {
+        ...initialShape,
+        points: newTrianglePoints,
+      };
+    }
+  }
 };

@@ -1,9 +1,4 @@
-import {
-  getBoundingBoxXPoint,
-  getBoundingBoxWidth,
-  getBoundingBoxHeight,
-  getBoundingBoxYPoint,
-} from '@/lib/utils/common';
+import { getShapeBoundingBox } from '@/lib/utils/common';
 import type { s } from '@/types';
 
 type Props = {
@@ -11,18 +6,14 @@ type Props = {
 };
 
 export default function ShapeBoundingBox({ shape }: Props) {
-  const x = getBoundingBoxXPoint(shape);
-  const y = getBoundingBoxYPoint(shape);
-
-  const width = getBoundingBoxWidth(shape);
-  const height = getBoundingBoxHeight(shape);
+  const boundingBox = getShapeBoundingBox(shape);
 
   return (
     <rect
-      x={x}
-      y={y}
-      width={width}
-      height={height}
+      x={boundingBox.minX}
+      y={boundingBox.minY}
+      width={boundingBox.width}
+      height={boundingBox.height}
       fill='transparent'
       strokeDasharray='5'
       strokeWidth='0.5'

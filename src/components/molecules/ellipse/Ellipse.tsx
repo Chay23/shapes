@@ -20,7 +20,6 @@ export default function Ellipse({ ellipse }: Props) {
         fill={ellipse.fill}
         stroke={ellipse.stroke}
         strokeWidth={ellipse.strokeWidth}
-        transform={`rotate(${ellipse.rotation} ${ellipse.cx} ${ellipse.cy})`}
       />
     </g>
   );
