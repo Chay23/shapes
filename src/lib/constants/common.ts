@@ -7,6 +7,7 @@ export const TYPE_ARROW = 'arrow';
 
 export const DEFAULT_FILL_COLOR = '#f2f2f2';
 export const DEFAULT_STROKE_COLOR = '#000000';
+export const DEFAULT_LINE_STROKE_WIDTH = 1;
 export const DEFAULT_STROKE_WIDTH = 0;
 
 export const RESIZE_CIRCLE_R = '3';
@@ -24,6 +25,8 @@ export const DEFAULT_ELLIPSE_RY = 40;
 
 export const DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT = 70;
 export const DEFAULT_TRIANGLE_CENTER_HORIZONTAL_SHIFT = 60;
+
+export const DEFAULT_LINE_HORIZONTAL_SHIFT_X = 50;
 
 export const NORTH_RESIZE = 'n';
 export const SOUTH_RESIZE = 's';

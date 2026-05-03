@@ -2,12 +2,14 @@ import { create } from 'zustand';
 import type { ShapesStore } from '../../types/store/shapes';
 import {
   TYPE_ELLIPSE,
+  TYPE_LINE,
   TYPE_RECTANGLE,
   TYPE_TRIANGLE,
 } from '../../lib/constants/common';
 import { constructRectangle } from '../../lib/utils/rectangle';
 import { constructEllipse } from '@/lib/utils/ellipse';
 import { constructTriangle } from '@/lib/utils/triangle';
+import { constructLine } from '@/lib/utils/line';
 
 export const useShapes = create<ShapesStore>(set => ({
   shapes: new Map(),
@@ -29,6 +31,10 @@ export const useShapes = create<ShapesStore>(set => ({
           return {
             shapes: updatedShapes.set(id, constructTriangle(id, x, y)),
           };
+          case TYPE_LINE:
+          return {
+            shapes: updatedShapes.set(id, constructLine(id, x, y)),
+          }
         default:
           return { shapes: state.shapes };
       }

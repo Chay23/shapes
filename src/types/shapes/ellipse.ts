@@ -1,4 +1,4 @@
-import type { Shape } from "./common";
+import type { FillableShape, Shape } from './common';
 
 export type BaseEllipse = {
   cx: number;
@@ -7,4 +7,4 @@ export type BaseEllipse = {
   ry: number;
 };
 
-export type Ellipse = Shape<BaseEllipse, 'ellipse'>;
+export type Ellipse = Shape<FillableShape<BaseEllipse>, 'ellipse'>;
