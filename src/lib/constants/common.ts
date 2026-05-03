@@ -37,6 +37,11 @@ export const SOUTH_EAST_RESIZE = 'se';
 export const ROTATE_BTN_SIZE = 18;
 export const ROTATE_BTN_Y_SHIFT = 30;
 
+export const STORAGE_UI_THEME_KEY = 'ui-theme';
+export const UI_THEME_DARK = 'dark';
+export const UI_THEME_LIGHT = 'light';
+export const UI_THEME_SYSTEM = 'system';
+
 export const DIRECTION_MAP = {
   [NORTH_RESIZE]: { x: 0, y: -1 },
   [SOUTH_RESIZE]: { x: 0, y: 1 },
