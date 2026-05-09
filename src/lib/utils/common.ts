@@ -55,7 +55,7 @@ export const toolbarOptions = [
   { id: 'text', component: Type, dataType: TYPE_TEXT },
 ];
 
-export function getRectangleBoundingBox(rectangle: s.Rectangle) {
+export function getRectangleBoundingBoxProps(rectangle: s.Rectangle) {
   return {
     width: rectangle.width,
     height: rectangle.height,
@@ -66,7 +66,7 @@ export function getRectangleBoundingBox(rectangle: s.Rectangle) {
   };
 }
 
-export function getEllipseBoundingBox(ellipse: s.Ellipse) {
+export function getEllipseBoundingBoxProps(ellipse: s.Ellipse) {
   const height = ellipse.ry * 2;
   const width = ellipse.rx * 2;
   return {
@@ -79,8 +79,8 @@ export function getEllipseBoundingBox(ellipse: s.Ellipse) {
   };
 }
 
-export function getTriangleBoundingBox(triangle: s.Triangle) {
-  const { points } = triangle;
+export function getNodeShapeBoundingBoxProps(shape: s.Triangle | s.Line) {
+  const { points } = shape;
   const xs = points.map(point => point.x);
   const ys = points.map(point => point.y);
   const maxX = Math.max(...xs);
@@ -94,43 +94,50 @@ export function getTriangleBoundingBox(triangle: s.Triangle) {
   return { maxX, minX, maxY, minY, height, width };
 }
 
-export function getBoundingBoxCenterXPoint(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.x + shape.width / 2;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.cx;
-    }
-    case TYPE_TRIANGLE: {
-      const { minX, width } = getTriangleBoundingBox(shape);
-      return minX + width / 2;
-    }
+export function getBoundingBoxCenterXPoint(shape: s.Shape) {
+  if (shape.type === TYPE_RECTANGLE) {
+    return shape.x + shape.width / 2;
   }
+  if (shape.type === TYPE_ELLIPSE) {
+    return shape.cx;
+  }
+  const { minX, width } = getNodeShapeBoundingBoxProps(shape);
+  return minX + width / 2;
 }
 
-export function getBoundingBoxCenterYPoint(shape: s.Shapes) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return shape.y + shape.height / 2;
-    }
-    case TYPE_ELLIPSE: {
-      return shape.cy;
-    }
-    case TYPE_TRIANGLE: {
-      const { minY, height } = getTriangleBoundingBox(shape);
-      return minY + height / 2;
-    }
+export function getBoundingBoxCenterYPoint(shape: s.Shape) {
+  if (shape.type === TYPE_RECTANGLE) {
+    return shape.y + shape.height / 2;
   }
+  if (shape.type === TYPE_ELLIPSE) {
+    return shape.cy;
+  }
+  const { minY, height } = getNodeShapeBoundingBoxProps(shape);
+  return minY + height / 2;
 }
 
-export default function getShapeResizePoints(
-  shape: s.Shapes,
+export function getPathShapeResizePoints(
+  shape: s.Line,
   resizeHandler: (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => void,
 ) {
-  const boundingBox = getShapeBoundingBox(shape);
+  return shape.points.map((point, index) => ({
+    cx: point.x,
+    cy: point.y,
+    className: 'cursor-pointer resize-btn',
+    'data-point-index': `${index} ${crypto.randomUUID()}`,
+    onPointerDown: resizeHandler,
+  }));
+}
+
+export default function getBoundingBoxResizePoints(
+  shape: s.Shape,
+  resizeHandler: (
+    pointerDownEvent: React.PointerEvent<SVGCircleElement>,
+  ) => void,
+) {
+  const boundingBox = getShapeBoundingBoxProps(shape);
 
   const middleResizePositionX = boundingBox.minX + boundingBox.width / 2;
   const middleResizePositionY = boundingBox.minY + boundingBox.height / 2;
@@ -200,24 +207,21 @@ export default function getShapeResizePoints(
 }
 
 export function getWrapperResizePosition(
-  shape: s.Shapes,
+  shape: s.Shape,
   resizeHandler: (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => void,
 ) {
-  switch (shape.type) {
-    case TYPE_RECTANGLE: {
-      return getShapeResizePoints(shape, resizeHandler);
-    }
-    case TYPE_ELLIPSE: {
-      return getShapeResizePoints(shape, resizeHandler);
-    }
-    case TYPE_TRIANGLE: {
-      return getShapeResizePoints(shape, resizeHandler);
-    }
-    default:
-      return [];
+  if (
+    shape.type === TYPE_RECTANGLE ||
+    shape.type === TYPE_ELLIPSE ||
+    shape.type === TYPE_TRIANGLE
+  ) {
+    return getBoundingBoxResizePoints(shape, resizeHandler);
+  } else if (shape.type === TYPE_LINE) {
+    return getPathShapeResizePoints(shape, resizeHandler);
   }
+  return [];
 }
 
 export const getRotationAngle = (
@@ -285,16 +289,19 @@ export function resizeBoundingBox(
   };
 }
 
-export function getShapeBoundingBox(shape: s.Shapes) {
+export function getShapeBoundingBoxProps(shape: s.Shape) {
   switch (shape.type) {
     case TYPE_RECTANGLE: {
-      return getRectangleBoundingBox(shape);
+      return getRectangleBoundingBoxProps(shape);
     }
     case TYPE_ELLIPSE: {
-      return getEllipseBoundingBox(shape);
+      return getEllipseBoundingBoxProps(shape);
     }
     case TYPE_TRIANGLE: {
-      return getTriangleBoundingBox(shape);
+      return getNodeShapeBoundingBoxProps(shape);
+    }
+    case TYPE_LINE: {
+      return getNodeShapeBoundingBoxProps(shape);
     }
   }
 }
@@ -310,7 +317,7 @@ function denormalizeTriangle(
 }
 
 function normalizeTriangle(triangle: s.Triangle) {
-  const box = getTriangleBoundingBox(triangle);
+  const box = getNodeShapeBoundingBoxProps(triangle);
 
   return triangle.points.map(point => ({
     x: (point.x - box.minX) / box.width,
@@ -319,11 +326,11 @@ function normalizeTriangle(triangle: s.Triangle) {
 }
 
 export const getResizedShape = (
-  initialShape: s.Shapes,
+  initialShape: s.Shape,
   resizeSide: DirectionKey,
   dx: number,
   dy: number,
-): s.Shapes => {
+): s.Shape => {
   const handle = DIRECTION_MAP[resizeSide];
   const rad = toRad(initialShape.rotation);
 
@@ -333,7 +340,7 @@ export const getResizedShape = (
   const localXAxisMovement = getAxisMovement(dx, dy, localXAxisStep);
   const localYAxisMovement = getAxisMovement(dx, dy, localYAxisStep);
 
-  const box = getShapeBoundingBox(initialShape);
+  const box = getShapeBoundingBoxProps(initialShape);
 
   const resizedBox = resizeBoundingBox(
     box,
@@ -379,7 +386,7 @@ export const getResizedShape = (
 };
 
 export function translateShape(
-  initialShape: s.Shapes,
+  initialShape: s.Shape,
   leftShift: number,
   topShift: number,
 ) {

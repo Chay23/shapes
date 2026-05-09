@@ -1,4 +1,4 @@
-import type { FillableShape, Shape } from './common';
+import type { TShape } from './common';
 
 export type BaseRectangle = {
   x: number;
@@ -7,4 +7,4 @@ export type BaseRectangle = {
   height: number;
 };
 
-export type Rectangle = Shape<FillableShape<BaseRectangle>, 'rectangle'>;
+export type Rectangle = TShape<BaseRectangle, 'rectangle'>;

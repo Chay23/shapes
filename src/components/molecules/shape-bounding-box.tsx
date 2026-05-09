@@ -1,12 +1,16 @@
-import { getShapeBoundingBox } from '@/lib/utils/common';
+import { getShapeBoundingBoxProps } from '@/lib/utils/common';
 import type { s } from '@/types';
 
 type Props = {
-  shape: s.Shapes;
+  shape: s.Shape;
 };
 
 export default function ShapeBoundingBox({ shape }: Props) {
-  const boundingBox = getShapeBoundingBox(shape);
+  const boundingBox = getShapeBoundingBoxProps(shape);
+
+  if (!boundingBox) {
+    return null;
+  }
 
   return (
     <rect

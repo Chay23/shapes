@@ -12,7 +12,7 @@ import ShapeWrapper from './shape-wrapper';
 import Triangle from './triangle/triangle';
 
 type Props = {
-  shape: s.Shapes;
+  shape: s.Shape;
 };
 
 export function Shape({ shape }: Props) {
@@ -38,7 +38,11 @@ export function Shape({ shape }: Props) {
       );
     }
     case TYPE_LINE: {
-      return <Line line={shape} />;
+      return (
+        <ShapeWrapper shape={shape}>
+          <Line line={shape} />
+        </ShapeWrapper>
+      );
     }
     default:
       return null;

@@ -2,7 +2,7 @@ import { useShapes } from '../store/shapes/shapes';
 import type { s } from '../types';
 import { translateShape } from '@/lib/utils/common';
 
-export function useShapeTranslate(shape: s.Shapes) {
+export function useShapeTranslate(shape: s.Shape) {
   const updateShape = useShapes(state => state.updateShape);
   const selectShape = useShapes(state => state.selectShape);
   const deselectShapes = useShapes(state => state.deselectShapes);

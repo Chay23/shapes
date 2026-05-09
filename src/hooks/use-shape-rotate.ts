@@ -8,7 +8,7 @@ import type { s } from '@/types';
 import { useRef } from 'react';
 
 type Props = {
-  initialShape: s.Shapes;
+  initialShape: s.Shape;
 };
 
 export default function useShapeRotate({ initialShape }: Props) {

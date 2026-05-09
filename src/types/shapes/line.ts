@@ -1,7 +1,7 @@
-import type { AxisPoint, Shape } from './common';
+import type { AxisPoint, TShape } from './common';
 
 type BaseLine = {
-  points: [AxisPoint, AxisPoint];
+  points: AxisPoint[];
 };
 
-export type Line = Shape<BaseLine, 'line'>;
+export type Line = TShape<BaseLine, 'line'>;

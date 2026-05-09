@@ -18,14 +18,14 @@ import {
 import ShapeBoundingBox from './shape-bounding-box';
 
 type Props = {
-  shape: s.Shapes;
+  shape: s.Shape;
   children: React.ReactNode;
 };
 
 export default function ShapeWrapper({ shape, children }: Props) {
   useShapeDeleteKey();
   const isShapeSelected = useIsShapeSelected(shape.id);
-  const { handleRectangleResize } = useRectangleResize({
+  const { handleShapeResize } = useRectangleResize({
     initialShape: shape,
   });
   const { handleShapeRotate } = useShapeRotate({
@@ -44,7 +44,7 @@ export default function ShapeWrapper({ shape, children }: Props) {
 
   const wrapperResizePositions = getWrapperResizePosition(
     shape,
-    handleRectangleResize,
+    handleShapeResize,
   );
 
   return (
@@ -54,6 +54,7 @@ export default function ShapeWrapper({ shape, children }: Props) {
         transform={`rotate(${shape.rotation} ${boundingBoxCenterX} ${boundingBoxCenterY})`}>
         {children}
       </g>
+
       {contextMenu && (
         <ShapeContextMenu
           open={contextMenu.open}
@@ -63,19 +64,19 @@ export default function ShapeWrapper({ shape, children }: Props) {
       )}
 
       {isShapeSelected && (
-        <g>
-          <g
-            data-keep-selection={true}
-            className='cursor-pointer'
-            transform={`rotate(${shape.rotation} ${boundingBoxCenterX} ${boundingBoxCenterY})`}>
-            <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
-            <ShapeBoundingBox shape={shape} />
-            {wrapperResizePositions.map(props => {
-              return (
-                <ResizeShapeButton key={props['data-resize-side']} {...props} />
-              );
-            })}
-          </g>
+        <g
+          data-keep-selection={true}
+          className='cursor-pointer'
+          transform={`rotate(${shape.rotation} ${boundingBoxCenterX} ${boundingBoxCenterY})`}>
+          <RotateButton shape={shape} onPointerDown={handleShapeRotate} />
+          <ShapeBoundingBox shape={shape} />
+          {wrapperResizePositions.map(props => {
+            const key =
+              'data-resize-side' in props
+                ? props['data-resize-side']
+                : props['data-point-index'];
+            return <ResizeShapeButton key={key} {...props} />;
+          })}
         </g>
       )}
     </>

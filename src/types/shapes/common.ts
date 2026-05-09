@@ -4,24 +4,22 @@ import type { Ellipse } from './ellipse';
 import type { Triangle } from './triangle';
 import type { Line } from './line';
 
-export type FillableShape<S> = S & {
-  fill: string;
-};
-
+export type ShapeType = 'rectangle' | 'ellipse' | 'triangle' | 'line';
 export type BaseShape = {
   id: string;
   stroke: string;
   strokeWidth: number;
   rotation: number;
+  fill?: string;
 };
 
-export type Shape<S, T extends ShapeType> = BaseShape &
+export type TShape<S, T extends ShapeType> = BaseShape &
   S & {
     type: T;
   };
 
-export type Shapes = Rectangle | Ellipse | Triangle | Line;
-export type ShapeType = 'rectangle' | 'ellipse' | 'triangle' | 'line';
+export type PointBasedShape = Triangle | Line;
+export type Shape = Rectangle | Ellipse | PointBasedShape;
 
 export type AxisPoint = {
   x: number;

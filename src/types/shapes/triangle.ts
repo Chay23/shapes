@@ -1,7 +1,7 @@
-import type { AxisPoint, FillableShape, Shape } from './common';
+import type { AxisPoint, TShape } from './common';
 
 export type BaseTriangle = {
   points: AxisPoint[];
 };
 
-export type Triangle = Shape<FillableShape<BaseTriangle>, 'triangle'>;
+export type Triangle = TShape<BaseTriangle, 'triangle'>;

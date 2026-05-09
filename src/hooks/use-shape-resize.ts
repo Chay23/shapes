@@ -4,13 +4,13 @@ import type { s } from '../types';
 import type { DirectionKey } from '@/types/shapes';
 
 type Props = {
-  initialShape: s.Shapes;
+  initialShape: s.Shape;
 };
 
 export default function useShapeResize({ initialShape }: Props) {
   const updateShape = useShapes(state => state.updateShape);
 
-  const handleRectangleResize = (
+  const handleShapeResize = (
     pointerDownEvent: React.PointerEvent<SVGCircleElement>,
   ) => {
     pointerDownEvent.stopPropagation();
@@ -45,5 +45,5 @@ export default function useShapeResize({ initialShape }: Props) {
     element.addEventListener('pointerup', () => controller.abort());
   };
 
-  return { handleRectangleResize };
+  return { handleShapeResize };
 }

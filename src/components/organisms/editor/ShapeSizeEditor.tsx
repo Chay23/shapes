@@ -4,7 +4,7 @@ import { Input } from '@/components/atoms/Input';
 import { Field, FieldLabel } from '@/components/atoms/Field';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
-import { getResizedShape, getShapeBoundingBox } from '@/lib/utils/common';
+import { getResizedShape, getShapeBoundingBoxProps } from '@/lib/utils/common';
 import EditorCell from './EditorCell';
 
 type RectangleSize = {
@@ -17,7 +17,7 @@ type InputName = 'width' | 'height';
 export default function ShapeSizeEditor() {
   const selectedShape = useSelectedShape() as s.Rectangle;
   const updateShape = useShapes(state => state.updateShape);
-  const boundingBox = getShapeBoundingBox(selectedShape);
+  const boundingBox = getShapeBoundingBoxProps(selectedShape);
 
   const [size, setSize] = useState<Partial<RectangleSize>>({});
 
