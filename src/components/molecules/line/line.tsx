@@ -1,3 +1,4 @@
+import { useShapeTranslate } from '@/hooks/useShapeTranslate';
 import type { s } from '@/types';
 
 type Props = {
@@ -5,11 +6,13 @@ type Props = {
 };
 
 export default function Line({ line }: Props) {
+  const { handleShapeTranslate } = useShapeTranslate(line);
+
   const {
     points: [point1, point2],
   } = line;
   return (
-    <g>
+    <g onPointerDown={handleShapeTranslate}>
       <line
         x1={point1.x}
         y1={point1.y}

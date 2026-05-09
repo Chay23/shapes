@@ -422,5 +422,19 @@ export function translateShape(
         points: updatedPoints,
       };
     }
+    case TYPE_LINE: {
+      const updatedPoints = initialShape.points.map(point => ({
+        x: point.x + leftShift,
+        y: point.y + topShift,
+      }));
+
+      return {
+        ...initialShape,
+        points: updatedPoints,
+      };
+    }
+    default: {
+      return initialShape;
+    }
   }
 }
