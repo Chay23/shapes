@@ -1,76 +1,49 @@
 import { create } from 'zustand';
 import type { ShapesStore } from '../../types/store/shapes';
-import {
-  TYPE_ELLIPSE,
-  TYPE_LINE,
-  TYPE_RECTANGLE,
-  TYPE_TRIANGLE,
-} from '../../lib/constants/common';
-import { constructRectangle } from '../../lib/utils/rectangle';
-import { constructEllipse } from '@/lib/utils/ellipse';
-import { constructTriangle } from '@/lib/utils/triangle';
-import { constructLine } from '@/lib/utils/line';
+import { SHAPE_CONSTRUCTORS } from '@/lib/constants/shape-factory';
 
 export const useShapes = create<ShapesStore>(set => ({
   shapes: new Map(),
   selectedShapeIds: new Set(),
   addShape: (type, id, x, y) =>
     set(state => {
-      const updatedShapes = new Map(state.shapes);
-      switch (type) {
-        case TYPE_RECTANGLE:
-          return {
-            shapes: updatedShapes.set(id, constructRectangle(id, x, y)),
-          };
-        case TYPE_ELLIPSE:
-          return {
-            shapes: updatedShapes.set(id, constructEllipse(id, x, y)),
-          };
+      const constuctor = SHAPE_CONSTRUCTORS[type];
+      if (!constuctor) return state;
 
-        case TYPE_TRIANGLE:
-          return {
-            shapes: updatedShapes.set(id, constructTriangle(id, x, y)),
-          };
-          case TYPE_LINE:
-          return {
-            shapes: updatedShapes.set(id, constructLine(id, x, y)),
-          }
-        default:
-          return { shapes: state.shapes };
-      }
+      const newShape = constuctor(id, x, y);
+      const updatedShapes = new Map(state.shapes).set(id, newShape);
+
+      return {
+        shapes: updatedShapes,
+      };
     }),
   updateShape: shape =>
     set(state => {
-      if (state.shapes.has(shape.id)) {
-        const updatedShapes = new Map(state.shapes);
-        updatedShapes.set(shape.id, shape);
-        return { shapes: updatedShapes };
-      }
-      return { shapes: state.shapes };
+      if (!state.shapes.has(shape.id)) return state;
+
+      const updatedShapes = new Map(state.shapes).set(shape.id, shape);
+      return { shapes: updatedShapes };
     }),
   deleteShape: (id: string) => {
     set(state => {
-      if (state.shapes.has(id)) {
-        const updatedShapes = new Map(state.shapes);
-        updatedShapes.delete(id);
-        const updatedSelectedShapeIds = new Set(state.selectedShapeIds);
-        updatedSelectedShapeIds.delete(id);
-        return {
-          shapes: updatedShapes,
-          selectedShapeIds: updatedSelectedShapeIds,
-        };
-      }
-      return { shapes: state.shapes, selectedShapeIds: state.selectedShapeIds };
+      if (!state.shapes.has(id)) return state;
+      const updatedShapes = new Map(state.shapes);
+      updatedShapes.delete(id);
+      const updatedSelectedShapeIds = new Set(state.selectedShapeIds);
+      updatedSelectedShapeIds.delete(id);
+      return {
+        shapes: updatedShapes,
+        selectedShapeIds: updatedSelectedShapeIds,
+      };
     });
   },
   selectShape: shape =>
     set(state => {
-      if (state.shapes.has(shape.id)) {
-        const updatedSelectedShapeIds = new Set(state.selectedShapeIds);
-        updatedSelectedShapeIds.add(shape.id);
-        return { selectedShapeIds: updatedSelectedShapeIds };
-      }
-      return { selectedShapeIds: state.selectedShapeIds };
+      if (!state.shapes.has(shape.id)) return state;
+      const updatedSelectedShapeIds = new Set(state.selectedShapeIds).add(
+        shape.id,
+      );
+      return { selectedShapeIds: updatedSelectedShapeIds };
     }),
 
   deselectShapes: () =>
