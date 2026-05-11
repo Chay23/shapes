@@ -54,7 +54,7 @@ export default function ShapeSizeEditor() {
     const dx = name === 'width' ? parseFloat(value) - boundingBox.width : 0;
     const dy = name === 'height' ? parseFloat(value) - boundingBox.height : 0;
 
-    const updatedShape = getResizedShape(selectedShape, resizeSide, dx, dy);
+    const updatedShape = getResizedShape(selectedShape, dx, dy, resizeSide, dy);
 
     updateShape(updatedShape);
   };

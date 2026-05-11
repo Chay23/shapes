@@ -16,6 +16,9 @@ export default function useShapeResize({ initialShape }: Props) {
     pointerDownEvent.stopPropagation();
     const element = pointerDownEvent.currentTarget;
     const resizeSide = element.getAttribute('data-resize-side') as DirectionKey;
+    const resizePointIndex = parseInt(
+      element.getAttribute('data-point-index') || '0',
+    );
 
     element.setPointerCapture(pointerDownEvent.pointerId);
 
@@ -24,7 +27,7 @@ export default function useShapeResize({ initialShape }: Props) {
 
     const controller = new AbortController();
 
-    element.addEventListener(
+    document.addEventListener(
       'pointermove',
       (pointerMoveEvent: PointerEvent) => {
         const shiftX = pointerMoveEvent.clientX - pressStartX;
@@ -32,9 +35,10 @@ export default function useShapeResize({ initialShape }: Props) {
 
         const updatedShape = getResizedShape(
           initialShape,
-          resizeSide,
           shiftX,
           shiftY,
+          resizeSide,
+          resizePointIndex,
         );
 
         updateShape(updatedShape);
@@ -42,7 +46,9 @@ export default function useShapeResize({ initialShape }: Props) {
       { signal: controller.signal },
     );
 
-    element.addEventListener('pointerup', () => controller.abort());
+    document.addEventListener('pointerup', () => controller.abort(), {
+      signal: controller.signal,
+    });
   };
 
   return { handleShapeResize };

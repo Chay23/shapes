@@ -10,7 +10,7 @@ export const DEFAULT_STROKE_COLOR = '#000000';
 export const DEFAULT_LINE_STROKE_WIDTH = 1;
 export const DEFAULT_STROKE_WIDTH = 0;
 
-export const RESIZE_CIRCLE_R = '3';
+export const RESIZE_CIRCLE_R = 3;
 export const RESIZE_CIRCLE_FILL = '#ffffff';
 export const RESIZE_CIRCLE_STROKE_COLOR = '#000000';
 export const RESIZE_CIRCLE_STROKE_WIDTH = 0.5;

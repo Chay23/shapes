@@ -1,4 +1,8 @@
-import { ROTATE_BTN_SIZE, ROTATE_BTN_Y_SHIFT } from '@/lib/constants/common';
+import {
+  ROTATE_BTN_SIZE,
+  ROTATE_BTN_Y_SHIFT,
+  TYPE_LINE,
+} from '@/lib/constants/common';
 import { getShapeBoundingBoxProps } from '@/lib/utils/common';
 import type { s } from '@/types';
 import { RotateCcw } from 'lucide-react';
@@ -10,6 +14,10 @@ type Props = React.SVGProps<SVGCircleElement> & {
 const BACKGROUND_CIRCLE_Y_SHIFT = 22;
 
 export default function RotateButton(props: Props) {
+  if (props.shape.type === TYPE_LINE) {
+    return null;
+  }
+
   const boundingBox = getShapeBoundingBoxProps(props.shape);
 
   const boundingBoxCenterX = boundingBox.minX + boundingBox.width / 2;

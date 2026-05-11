@@ -1,3 +1,4 @@
+import { TYPE_LINE } from '@/lib/constants/common';
 import { getShapeBoundingBoxProps } from '@/lib/utils/common';
 import type { s } from '@/types';
 
@@ -8,7 +9,7 @@ type Props = {
 export default function ShapeBoundingBox({ shape }: Props) {
   const boundingBox = getShapeBoundingBoxProps(shape);
 
-  if (!boundingBox) {
+  if (!boundingBox || shape.type === TYPE_LINE) {
     return null;
   }
 

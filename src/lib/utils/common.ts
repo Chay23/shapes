@@ -306,7 +306,7 @@ export function getShapeBoundingBoxProps(shape: s.Shape) {
   }
 }
 
-function denormalizeTriangle(
+function denormalizePoints(
   points: s.AxisPoint[],
   box: s.BoundingBox,
 ): s.AxisPoint[] {
@@ -316,24 +316,48 @@ function denormalizeTriangle(
   }));
 }
 
-function normalizeTriangle(triangle: s.Triangle) {
-  const box = getNodeShapeBoundingBoxProps(triangle);
+function normalizePoints(shape: s.PointBasedShape) {
+  const box = getNodeShapeBoundingBoxProps(shape);
 
-  return triangle.points.map(point => ({
+  return shape.points.map(point => ({
     x: (point.x - box.minX) / box.width,
     y: (point.y - box.minY) / box.height,
   }));
 }
 
-export const getResizedShape = (
+export function resizeNonBoundingBoxShape(
+  initialShape: s.Line,
+  resizePointIndex: number,
+  dx: number,
+  dy: number,
+) {
+  if (initialShape.type === TYPE_LINE) {
+    const newLinePoints = initialShape.points.map((point, index) => {
+      if (index === resizePointIndex) {
+        return {
+          x: point.x + dx,
+          y: point.y + dy,
+        };
+      }
+      return point;
+    });
+
+    return {
+      ...initialShape,
+      points: newLinePoints,
+    };
+  }
+  return initialShape;
+}
+
+export function resizeBoundingBoxShape(
   initialShape: s.Shape,
   resizeSide: DirectionKey,
   dx: number,
   dy: number,
-): s.Shape => {
+) {
   const handle = DIRECTION_MAP[resizeSide];
   const rad = toRad(initialShape.rotation);
-
   const localXAxisStep = getLocalXAxisStep(rad);
   const localYAxisStep = getLocalYAxisStep(rad);
 
@@ -371,18 +395,32 @@ export const getResizedShape = (
       };
     }
     case TYPE_TRIANGLE: {
-      const normalizedPoints = normalizeTriangle(initialShape);
-      const newTrianglePoints = denormalizeTriangle(
-        normalizedPoints,
-        resizedBox,
-      );
+      const normalizedPoints = normalizePoints(initialShape);
+      const newTrianglePoints = denormalizePoints(normalizedPoints, resizedBox);
 
       return {
         ...initialShape,
         points: newTrianglePoints,
       };
     }
+    default: {
+      return initialShape;
+    }
   }
+}
+
+export const getResizedShape = (
+  initialShape: s.Shape,
+  dx: number,
+  dy: number,
+  resizeSide: DirectionKey,
+  resizePointIndex?: number
+): s.Shape => {
+  if (initialShape.type === TYPE_LINE && resizePointIndex !== undefined) {
+    return resizeNonBoundingBoxShape(initialShape, resizePointIndex, dx, dy);
+  }
+
+  return resizeBoundingBoxShape(initialShape, resizeSide, dx, dy);
 };
 
 export function translateShape(
