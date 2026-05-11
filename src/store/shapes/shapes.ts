@@ -15,6 +15,7 @@ export const useShapes = create<ShapesStore>(set => ({
 
       return {
         shapes: updatedShapes,
+        selectedShapeIds: new Set([id]),
       };
     }),
   updateShape: shape =>
