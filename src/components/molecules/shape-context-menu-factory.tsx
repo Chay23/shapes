@@ -8,7 +8,7 @@ import ReactangleContextMenuContent from './rectangle/rectangle-context-menu-con
 import EllipseContextMenuContent from './ellipse/ellipse-context-menu-content';
 import TriangleContextMenuContent from './triangle/triangle-context-menu-content';
 
-export default function ShapeContextMenuContent() {
+export default function ShapeContextMenuFactory() {
   const selectedShape = useSelectedShape();
 
   if (!selectedShape) return null;

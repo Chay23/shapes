@@ -1,6 +1,6 @@
 import { useCloseContextMenu } from '@/store/contextMenu/selectors';
 import { DropdownMenu, DropdownMenuContent } from '../atoms/dropdown-menu';
-import ShapeContextMenuContent from './shape-context-menu-content';
+import ShapeContextMenuContent from './shape-context-menu-factory';
 
 type Props = {
   open: boolean;
