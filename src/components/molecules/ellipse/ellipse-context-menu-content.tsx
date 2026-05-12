@@ -1,41 +1,36 @@
-import {
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-} from '@/components/atoms/dropdown-menu';
+import { DropdownMenuGroup } from '@/components/atoms/dropdown-menu';
+import useShapeRotateInstant from '@/hooks/use-shape-rotate-instant';
 import { useSelectedShape } from '@/store/shapes/selectors';
 import { useShapes } from '@/store/shapes/shapes';
+import ShapeContextMenuItem from '../shape-context-menu-item';
+import { getEllipseContextMenu } from '@/lib/utils/ellipse';
 
 export default function EllipseContextMenuContent() {
   const selectedShape = useSelectedShape();
-  const deleteShape = useShapes((state) => state.deleteShape);
+  const deleteShape = useShapes(state => state.deleteShape);
+  const { handleShapeRotate } = useShapeRotateInstant(selectedShape!);
 
   const handleShapeDelete = () => {
-    if (selectedShape) {
-      deleteShape(selectedShape.id);
-    }
+    deleteShape(selectedShape!.id);
   };
+
+  const handleShapeRotation = (event: React.PointerEvent<HTMLDivElement>) => {
+    const angle = parseInt(
+      event.currentTarget.getAttribute('data-angle') || '0',
+    );
+    handleShapeRotate(selectedShape!.rotation + angle);
+  };
+
+  const contextMenu = getEllipseContextMenu({
+    rotateShape: handleShapeRotation,
+    deleteShape: handleShapeDelete,
+  });
 
   return (
     <DropdownMenuGroup>
-      <DropdownMenuItem>
-        Rotate 90°
-        <DropdownMenuShortcut>Ctrl + R</DropdownMenuShortcut>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        Bring to front
-        <DropdownMenuShortcut>{`Ctrl + ]`}</DropdownMenuShortcut>
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        Send to back
-        <DropdownMenuShortcut>{`Ctrl + [`}</DropdownMenuShortcut>
-      </DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem onPointerUp={handleShapeDelete}>
-        Delete
-        <DropdownMenuShortcut>Delete</DropdownMenuShortcut>
-      </DropdownMenuItem>
+      {contextMenu.map(item => (
+        <ShapeContextMenuItem key={item.key} item={item} />
+      ))}
     </DropdownMenuGroup>
   );
 }
