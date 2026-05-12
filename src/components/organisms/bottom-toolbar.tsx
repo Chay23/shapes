@@ -27,14 +27,17 @@ export default function BottomToolbar() {
   return (
     <Surface className='fixed bottom-3 left-1/2 -translate-x-1/2 py-1.5 px-4 shadow-md'>
       <div className='flex gap-3'>
-        {toolbarOptions.map(({ id, component: Component, dataType }) => (
-          <ShapeTypeButton
-            key={id}
-            data-type={dataType}
-            onClick={handleAddShape}>
-            <Component strokeWidth={1} />
-          </ShapeTypeButton>
-        ))}
+        {toolbarOptions.map(
+          ({ id, component: Component, dataType, ...rest }) => (
+            <ShapeTypeButton
+              key={id}
+              data-type={dataType}
+              onClick={handleAddShape}
+              {...rest}>
+              <Component strokeWidth={1} />
+            </ShapeTypeButton>
+          ),
+        )}
       </div>
     </Surface>
   );

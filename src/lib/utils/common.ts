@@ -34,25 +34,57 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const toolbarOptions = [
   {
     id: 'hand',
     component: Hand,
+    tooltip: 'Select',
   },
   {
-    id: '',
+    id: 'move',
     component: MousePointer,
+    tooltip: 'Move',
   },
   {
     id: 'rectangle',
     component: Square,
     dataType: TYPE_RECTANGLE,
+    tooltip: capitalizeFirstLetter(TYPE_RECTANGLE),
   },
-  { id: 'ellipse', component: Circle, dataType: TYPE_ELLIPSE },
-  { id: 'triangle', component: Triangle, dataType: TYPE_TRIANGLE },
-  { id: 'arrow', component: MoveRight, dataType: TYPE_ARROW },
-  { id: 'line', component: Minus, dataType: TYPE_LINE },
-  { id: 'text', component: Type, dataType: TYPE_TEXT },
+  {
+    id: 'ellipse',
+    component: Circle,
+    dataType: TYPE_ELLIPSE,
+    tooltip: capitalizeFirstLetter(TYPE_ELLIPSE),
+  },
+  {
+    id: 'triangle',
+    component: Triangle,
+    dataType: TYPE_TRIANGLE,
+    tooltip: capitalizeFirstLetter(TYPE_TRIANGLE),
+  },
+  {
+    id: 'arrow',
+    component: MoveRight,
+    dataType: TYPE_ARROW,
+    tooltip: capitalizeFirstLetter(TYPE_ARROW),
+  },
+  {
+    id: 'line',
+    component: Minus,
+    dataType: TYPE_LINE,
+    tooltip: capitalizeFirstLetter(TYPE_LINE),
+  },
+  {
+    id: 'text',
+    component: Type,
+    dataType: TYPE_TEXT,
+    tooltip: capitalizeFirstLetter(TYPE_TEXT),
+  },
 ];
 
 export function getRectangleBoundingBoxProps(rectangle: s.Rectangle) {
@@ -414,7 +446,7 @@ export const getResizedShape = (
   dx: number,
   dy: number,
   resizeSide: DirectionKey,
-  resizePointIndex?: number
+  resizePointIndex?: number,
 ): s.Shape => {
   if (initialShape.type === TYPE_LINE && resizePointIndex !== undefined) {
     return resizeNonBoundingBoxShape(initialShape, resizePointIndex, dx, dy);
