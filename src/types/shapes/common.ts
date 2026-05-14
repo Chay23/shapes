@@ -3,6 +3,7 @@ import type { Rectangle } from './rectangle';
 import type { Ellipse } from './ellipse';
 import type { Triangle } from './triangle';
 import type { Line } from './line';
+import type { KeysOfType } from '../common';
 
 export type ShapeType = 'rectangle' | 'ellipse' | 'triangle' | 'line';
 export type BaseShape = {
@@ -25,5 +26,8 @@ export type AxisPoint = {
   x: number;
   y: number;
 };
+
+export type NumericShapeKeys = KeysOfType<Shape, number>;
+export type ColorShapeKeys = 'fill';
 
 export type DirectionKey = keyof typeof DIRECTION_MAP;

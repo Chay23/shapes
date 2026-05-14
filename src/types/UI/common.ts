@@ -1,11 +1,55 @@
-export type EditorCell = {
+import type { s } from '..';
+
+export type EditorCellType =
+  | 'numeric'
+  | 'text'
+  | 'slider'
+  | 'color-picker'
+  | 'custom';
+
+export type NumericEditInputArgs = {
+  type: 'numeric';
+  shapePropName: s.NumericShapeKeys;
+  props: {
+    inputId: string;
+    label?: string;
+    fieldClassName?: string;
+    inputClassName?: string;
+  };
+};
+
+export type ColorEditInputArgs = {
+  type: 'color-picker';
+  shapePropName: s.ColorShapeKeys;
+  props: {
+    inputId: string;
+    label?: string;
+    fieldClassName?: string;
+    inputClassName?: string;
+  };
+};
+
+export type CustomEditorArgs = {
+  type: 'custom';
+  component: () => React.ReactElement;
+};
+
+export type EditorCell = (
+  | NumericEditInputArgs
+  | ColorEditInputArgs
+  | CustomEditorArgs
+) & {
   separator?: boolean;
-  render: () => React.ReactElement;
 };
 
 export type EditorGrid = {
   title: string;
-  components: EditorCell[];
+  cells: EditorCell[];
+};
+
+export type Editor = {
+  title: React.ReactElement | string;
+  grids: EditorGrid[];
 };
 
 export type ContextMenuItem = {

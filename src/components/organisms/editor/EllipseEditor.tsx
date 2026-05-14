@@ -1,4 +1,4 @@
-import { EditorGrid } from './EditorGrid';
+import EditorGrid from './EditorGrid';
 import { getEllipseEditor } from '@/lib/utils/ellipse';
 
 export default function EllipseEditor() {

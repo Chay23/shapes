@@ -11,8 +11,13 @@ import {
 } from '../constants/common';
 import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
 import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
-import FillColorEditor from '@/components/organisms/editor/FillColorEditor';
-import { KEY_BRING_TO_FRONT_ITEM, KEY_DELETE_ITEM, KEY_ROTATE_90_ITEM, KEY_SEND_TO_BACK_ITEM } from '../constants/context-menu';
+import FillColorEditor from '@/components/molecules/editor/ColorEditorInput';
+import {
+  KEY_BRING_TO_FRONT_ITEM,
+  KEY_DELETE_ITEM,
+  KEY_ROTATE_90_ITEM,
+  KEY_SEND_TO_BACK_ITEM,
+} from '../constants/context-menu';
 
 export function constructEllipse(
   id: string,

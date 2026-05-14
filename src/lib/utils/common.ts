@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import {
+  DIGITS_AFTER_COMMA,
   DIRECTION_MAP,
   EAST_RESIZE,
   NORTH_EAST_RESIZE,
@@ -36,6 +37,14 @@ export function cn(...inputs: ClassValue[]) {
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function isEmptyString(str: string) {
+  return str.trim() === '';
+}
+
+export function isValidNumber(value: string) {
+  return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
 }
 
 export const toolbarOptions = [
@@ -261,8 +270,10 @@ export const getRotationAngle = (
   cy: number,
   pointerX: number,
   pointerY: number,
-) => {
-  return Math.atan2(pointerY - cy, pointerX - cx) * (180 / Math.PI);
+): number => {
+  return +(Math.atan2(pointerY - cy, pointerX - cx) * (180 / Math.PI)).toFixed(
+    DIGITS_AFTER_COMMA,
+  );
 };
 
 export function toRad(angle: number) {

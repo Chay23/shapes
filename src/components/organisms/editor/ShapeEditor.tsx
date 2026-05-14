@@ -19,11 +19,11 @@ export default function ShapeEditor() {
     case TYPE_RECTANGLE: {
       return <RectangleEditor />;
     }
-    case TYPE_ELLIPSE: {
-      return <EllipseEditor />;
-    }
-    case TYPE_TRIANGLE: {
-      return <TriangleEditor />;
-    }
+    // case TYPE_ELLIPSE: {
+    // return <EllipseEditor />;
+    // }
+    // case TYPE_TRIANGLE: {
+    // return <TriangleEditor />;
+    // }
   }
 }

@@ -1,3 +1,4 @@
+import { DIGITS_AFTER_COMMA } from '@/lib/constants/common';
 import {
   getBoundingBoxCenterXPoint,
   getBoundingBoxCenterYPoint,
@@ -43,7 +44,9 @@ export default function useShapeRotate({ initialShape }: Props) {
 
       updateShape({
         ...initialShape,
-        rotation: startRotationRef.current + delta,
+        rotation: +(startRotationRef.current + delta).toFixed(
+          DIGITS_AFTER_COMMA,
+        ),
       });
     };
 

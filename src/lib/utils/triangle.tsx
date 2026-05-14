@@ -10,7 +10,7 @@ import {
 } from '../constants/common';
 import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
 import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
-import FillColorEditor from '@/components/organisms/editor/FillColorEditor';
+import FillColorEditor from '@/components/molecules/editor/ColorEditorInput';
 
 export function constructTriangle(
   id: string,

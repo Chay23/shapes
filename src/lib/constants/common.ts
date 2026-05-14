@@ -56,3 +56,5 @@ export const DIRECTION_MAP = {
   [SOUTH_EAST_RESIZE]: { x: 1, y: 1 },
   [SOUTH_WEST_RESIZE]: { x: -1, y: 1 },
 };
+
+export const DIGITS_AFTER_COMMA = 2;

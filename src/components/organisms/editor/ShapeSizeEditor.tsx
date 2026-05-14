@@ -5,7 +5,6 @@ import { Field, FieldLabel } from '@/components/atoms/Field';
 import type { s } from '@/types';
 import { useSelectedShape } from '@/store/shapes/selectors';
 import { getResizedShape, getShapeBoundingBoxProps } from '@/lib/utils/common';
-import EditorCell from './EditorCell';
 
 type RectangleSize = {
   width: string | number;
@@ -74,31 +73,29 @@ export default function ShapeSizeEditor() {
   };
 
   return (
-    <EditorCell title={'Size'}>
-      <div className='flex gap-3 py-2'>
-        <Field className='flex-1'>
-          <FieldLabel htmlFor='shape-height'>Height</FieldLabel>
-          <Input
-            id='shape-height'
-            value={displayHeight}
-            name='height'
-            onChange={handleSizeChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-          />
-        </Field>
-        <Field className='flex-1'>
-          <FieldLabel htmlFor='shape-width'>Width</FieldLabel>
-          <Input
-            id='shape-width'
-            value={displayWidth}
-            name='width'
-            onChange={handleSizeChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-          />
-        </Field>
-      </div>
-    </EditorCell>
+    <div className='flex gap-3 py-2'>
+      <Field className='flex-1'>
+        <FieldLabel htmlFor='shape-height'>Height</FieldLabel>
+        <Input
+          id='shape-height'
+          value={displayHeight}
+          name='height'
+          onChange={handleSizeChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+        />
+      </Field>
+      <Field className='flex-1'>
+        <FieldLabel htmlFor='shape-width'>Width</FieldLabel>
+        <Input
+          id='shape-width'
+          value={displayWidth}
+          name='width'
+          onChange={handleSizeChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+        />
+      </Field>
+    </div>
   );
 }

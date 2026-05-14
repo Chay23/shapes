@@ -10,8 +10,6 @@ import {
   NINETY_DEGREE_ROTATION,
   TYPE_RECTANGLE,
 } from '../constants/common';
-import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
-import FillColorEditor from '@/components/organisms/editor/FillColorEditor';
 import {
   KEY_BRING_TO_FRONT_ITEM,
   KEY_DELETE_ITEM,
@@ -36,20 +34,50 @@ export const constructRectangle = (
   rotation: DEFAULT_ROTATION_ANGLE,
 });
 
-export function getRectangleEditor(): ui.EditorGrid {
+export function getRectangleEditor(): ui.Editor {
   return {
     title: 'Rectangle',
-    components: [
+    grids: [
       {
-        render: ShapeSizeEditor,
-        separator: true,
+        title: 'Size',
+        cells: [
+          {
+            type: 'custom',
+            component: ShapeSizeEditor,
+          },
+        ],
       },
       {
-        render: StrokeWidthEditor,
-        separator: true,
+        title: 'Appearance',
+        cells: [
+          {
+            type: 'color-picker',
+            shapePropName: 'fill',
+            props: {
+              label: 'Color',
+              inputId: 'rectangle-fill-color',
+            },
+          },
+          {
+            type: 'numeric',
+            separator: true,
+            shapePropName: 'rotation',
+            props: {
+              label: 'Rotation \u00B0',
+              inputId: 'rectangle-rotation',
+            },
+          },
+        ],
       },
       {
-        render: FillColorEditor,
+        title: 'Stroke',
+        cells: [
+          // {
+          // type: 'slider',
+          // render: StrokeWidthEditor,
+          // separator: true,
+          // },
+        ],
       },
     ],
   };
