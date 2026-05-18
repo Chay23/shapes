@@ -7,6 +7,8 @@ export type EditorCellType =
   | 'color-picker'
   | 'custom';
 
+export type StrokeType = 'solid' | 'dashed';
+
 export type NumericEditInputArgs = {
   type: 'numeric';
   shapePropName: s.NumericShapeKeys;
@@ -31,7 +33,7 @@ export type ColorEditInputArgs = {
 
 export type CustomEditorArgs = {
   type: 'custom';
-  component: () => React.ReactElement;
+  component: (...args: never[]) => React.ReactElement;
 };
 
 export type SliderEditorArgs = {
@@ -45,17 +47,22 @@ export type SliderEditorArgs = {
   };
 };
 
+export type TabEditorArgs = {
+  [key: string]: EditorGrid;
+};
+
 export type EditorCell = (
   | NumericEditInputArgs
   | ColorEditInputArgs
   | CustomEditorArgs
   | SliderEditorArgs
+  | TabEditorArgs
 ) & {
   separator?: boolean;
 };
 
 export type EditorGrid = {
-  title: string;
+  title?: string;
   cells: EditorCell[];
 };
 

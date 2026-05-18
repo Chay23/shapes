@@ -8,18 +8,15 @@ type Props = {
 
 export default function EditorGrid({ grid }: Props) {
   const { title, cells } = grid;
+
   return (
     <section className='flex flex-col gap-1'>
-      {typeof title === 'string' ? (
-        <h6 className='text-base'>{title}</h6>
-      ) : (
-        title
-      )}
+      {title && <h6 className='text-sm mb-1'>{title}</h6>}
       {cells.map(cell => {
         return (
           <>
             <EditorCell {...cell} />
-            {cell.separator && <Separator className='my-2' />}
+            {cell.separator && <Separator className='mt-2' />}
           </>
         );
       })}

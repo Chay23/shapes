@@ -16,6 +16,7 @@ import {
   KEY_ROTATE_90_ITEM,
   KEY_SEND_TO_BACK_ITEM,
 } from '../constants/context-menu';
+import StrokeEditor from '@/components/molecules/editor/StrokeEditor';
 
 export const constructRectangle = (
   id: string,
@@ -73,22 +74,8 @@ export function getRectangleEditor(): ui.Editor {
         title: 'Stroke',
         cells: [
           {
-            type: 'color-picker',
-            shapePropName: 'stroke',
-            props: {
-              label: 'Color',
-              inputId: 'rectangle-fill-color',
-            },
-          },
-          {
-            type: 'slider',
-            separator: true,
-            shapePropName: 'strokeWidth',
-            props: {
-              inputId: 'rectangle-stroke-width',
-              min: 0,
-              max: 20,
-            },
+            type: 'custom',
+            component: StrokeEditor,
           },
         ],
       },
