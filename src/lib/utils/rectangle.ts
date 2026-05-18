@@ -1,4 +1,4 @@
-import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
+import ShapeSizeEditor from '@/components/organisms/editor/shape-size-editor';
 import type { s, ui } from '../../types';
 import {
   DEFAULT_FILL_COLOR,

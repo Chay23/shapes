@@ -5,11 +5,15 @@ import { useSelectedShape } from '@/store/shapes/selectors';
 import { isEmptyString, isValidNumber } from '@/lib/utils/common';
 import { Field, FieldLabel } from '@/components/atoms/Field';
 
-type Props = ui.NumericEditInputArgs['props'] & {
-  shapePropName: s.NumericShapeKeys;
-  ref?: React.Ref<HTMLInputElement>;
-  onCommit: (value: number) => void;
-};
+type Props = ui.NumericEditInputArgs['props'] &
+  Omit<
+    React.ComponentProps<'input'>,
+    'id | onChange' | 'onBlur' | 'onKeyDown'
+  > & {
+    shapePropName?: s.NumericShapeKeys;
+    value?: number;
+    onCommit: (value: number) => void;
+  };
 
 export default function NumberEditorInput({
   shapePropName,
@@ -17,44 +21,45 @@ export default function NumberEditorInput({
   label,
   fieldClassName,
   inputClassName,
-  onCommit,
   ref,
+  value,
+  onCommit,
+  ...rest
 }: Props) {
   const selectedShape = useSelectedShape() as s.Shape;
-  const [value, setValue] = useState<string | undefined>(undefined);
+  const [inputValue, setInputValue] = useState<string | undefined>(undefined);
 
-  const displayValue =
-    value !== undefined ? value : selectedShape[shapePropName];
+  const getDisplayValue = () => {
+    if (inputValue !== undefined) return inputValue;
+    if (shapePropName) return selectedShape[shapePropName];
+    return value;
+  };
+
+  const displayValue = getDisplayValue();
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (!selectedShape) return;
-    setValue(value);
+    setInputValue(e.target.value);
   };
 
-  const commitValue = (value: string) => {
-    setValue(undefined);
+  const commitValue = (val: string) => {
+    setInputValue(undefined);
 
-    if (!selectedShape || isEmptyString(value) || !isValidNumber(value)) return;
+    if (isEmptyString(val) || !isValidNumber(val)) return;
 
-    onCommit(parseFloat(value));
+    onCommit(parseFloat(val));
   };
 
-  const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-
-    commitValue(value);
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    commitValue(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-
     if (e.key === 'Enter') {
-      commitValue(value);
+      commitValue(e.currentTarget.value);
     }
 
     if (e.key === 'Escape') {
-      setValue(undefined);
+      setInputValue(undefined);
     }
   };
 
@@ -70,6 +75,7 @@ export default function NumberEditorInput({
         onChange={handleValueChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
+        {...rest}
       />
     </Field>
   );

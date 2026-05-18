@@ -8,7 +8,7 @@ import {
   DEFAULT_TRIANGLE_CENTER_VERTICAL_SHIFT,
   TYPE_TRIANGLE,
 } from '../constants/common';
-import ShapeSizeEditor from '@/components/organisms/editor/ShapeSizeEditor';
+import ShapeSizeEditor from '@/components/organisms/editor/shape-size-editor';
 import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
 import FillColorEditor from '@/components/molecules/editor/ColorEditorInput';
 
