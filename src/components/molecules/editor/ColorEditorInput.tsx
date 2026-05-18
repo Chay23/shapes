@@ -56,7 +56,7 @@ export default function ColorEditorInput({
           accept=''
         />
         <Button
-          className='basis-2/12'
+          className='basis-2/12 border-input'
           style={{ backgroundColor: fill }}
           onPointerDown={handleColorPickerOpen}></Button>
       </ButtonGroup>

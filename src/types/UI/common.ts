@@ -34,10 +34,22 @@ export type CustomEditorArgs = {
   component: () => React.ReactElement;
 };
 
+export type SliderEditorArgs = {
+  type: 'slider';
+  shapePropName: s.NumericShapeKeys;
+  props: {
+    inputId: string;
+    label?: string;
+    min: number;
+    max: number;
+  };
+};
+
 export type EditorCell = (
   | NumericEditInputArgs
   | ColorEditInputArgs
   | CustomEditorArgs
+  | SliderEditorArgs
 ) & {
   separator?: boolean;
 };

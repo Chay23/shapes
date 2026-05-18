@@ -72,11 +72,16 @@ export function getRectangleEditor(): ui.Editor {
       {
         title: 'Stroke',
         cells: [
-          // {
-          // type: 'slider',
-          // render: StrokeWidthEditor,
-          // separator: true,
-          // },
+          {
+            type: 'slider',
+            separator: true,
+            shapePropName: 'strokeWidth',
+            props: {
+              inputId: 'rectangle-stroke-width',
+              min: 0,
+              max: 20,
+            },
+          },
         ],
       },
     ],
