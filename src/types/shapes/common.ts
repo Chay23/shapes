@@ -28,6 +28,6 @@ export type AxisPoint = {
 };
 
 export type NumericShapeKeys = KeysOfType<Shape, number>;
-export type ColorShapeKeys = 'fill';
+export type ColorShapeKeys = 'fill' | 'stroke';
 
 export type DirectionKey = keyof typeof DIRECTION_MAP;

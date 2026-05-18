@@ -73,6 +73,14 @@ export function getRectangleEditor(): ui.Editor {
         title: 'Stroke',
         cells: [
           {
+            type: 'color-picker',
+            shapePropName: 'stroke',
+            props: {
+              label: 'Color',
+              inputId: 'rectangle-fill-color',
+            },
+          },
+          {
             type: 'slider',
             separator: true,
             shapePropName: 'strokeWidth',
