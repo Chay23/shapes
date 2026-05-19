@@ -1,6 +1,7 @@
-import type { TabEditorArgs } from '@/types/UI';
+import type { StrokeType, TabEditorArgs } from '@/types/UI';
 
-export const strokeStyleOptions: TabEditorArgs = {
+export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
+  type: 'tabs',
   solid: {
     cells: [
       {

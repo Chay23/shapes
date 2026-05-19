@@ -33,7 +33,7 @@ export type ColorEditInputArgs = {
 
 export type CustomEditorArgs = {
   type: 'custom';
-  component: (...args: never[]) => React.ReactElement;
+  component: () => React.ReactElement;
 };
 
 export type SliderEditorArgs = {
@@ -47,8 +47,10 @@ export type SliderEditorArgs = {
   };
 };
 
-export type TabEditorArgs = {
-  [key: string]: EditorGrid;
+export type TabEditorArgs<T extends string> = {
+  type: 'tabs';
+} & {
+  [K in T]: EditorGrid;
 };
 
 export type EditorCell = (
@@ -56,7 +58,7 @@ export type EditorCell = (
   | ColorEditInputArgs
   | CustomEditorArgs
   | SliderEditorArgs
-  | TabEditorArgs
+  | TabEditorArgs<string>
 ) & {
   separator?: boolean;
 };

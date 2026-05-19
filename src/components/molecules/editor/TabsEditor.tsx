@@ -3,21 +3,22 @@ import { ButtonGroup } from '@/components/atoms/ButtonGroup';
 import EditorGrid from '@/components/organisms/editor/EditorGrid';
 import { capitalizeFirstLetter } from '@/lib/utils/common';
 import type { ui } from '@/types';
-import { useState } from 'react';
 
-type Props = {
-  variantOptions: string[];
-  options: ui.TabEditorArgs;
-  defaultOption: string;
+type Props<T extends string> = {
+  selectedOption: T;
+  variantOptions: T[];
+  options: ui.TabEditorArgs<T>;
+  onOptionChange: (option: T) => void;
 };
 
-export function TabsEditor({ variantOptions, options, defaultOption }: Props) {
-  const [selectedOption, setSelectedOption] = useState<string>(
-    defaultOption || variantOptions[0],
-  );
-
-  const handleOptionChange = (option: string) => {
-    setSelectedOption(option);
+export function TabsEditor<T extends string>({
+  selectedOption,
+  variantOptions,
+  options,
+  onOptionChange,
+}: Props<T>) {
+  const handleOptionChange = (option: T) => {
+    onOptionChange(option);
   };
 
   return (

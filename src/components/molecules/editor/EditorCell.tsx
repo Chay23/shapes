@@ -11,8 +11,8 @@ export default function EditorCell(cellProps: Props) {
   const selectedShape = useSelectedShape() as s.Rectangle;
   const updateShape = useShapes(state => state.updateShape);
 
-  const handleInputCommit = (value: number | number[] | string) => {
-    if (cellProps.type !== 'custom')
+  const handleInputCommit = (value: number | string) => {
+    if (cellProps.type !== 'custom' && cellProps.type !== 'tabs')
       updateShape({ ...selectedShape, [cellProps.shapePropName]: value });
   };
 
