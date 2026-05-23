@@ -33,6 +33,10 @@ export const constructRectangle = (
   x: x,
   y: y,
   rotation: DEFAULT_ROTATION_ANGLE,
+  strokeDasharray: {
+    gap: undefined,
+    dash: undefined,
+  },
 });
 
 export function getRectangleEditor(): ui.Editor {

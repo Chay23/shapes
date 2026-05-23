@@ -5,13 +5,20 @@ import type { Triangle } from './triangle';
 import type { Line } from './line';
 import type { KeysOfType } from '../common';
 
+export type DashedStroke = {
+  dash?: number;
+  gap?: number;
+};
+
 export type ShapeType = 'rectangle' | 'ellipse' | 'triangle' | 'line';
+
 export type BaseShape = {
   id: string;
   stroke: string;
   strokeWidth: number;
   rotation: number;
   fill?: string;
+  strokeDasharray: DashedStroke;
 };
 
 export type TShape<S, T extends ShapeType> = BaseShape &

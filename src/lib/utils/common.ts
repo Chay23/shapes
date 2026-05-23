@@ -519,3 +519,9 @@ export function translateShape(
     }
   }
 }
+
+export function formatDashedStroke(strokeProps: s.DashedStroke | null) {
+  return strokeProps
+    ? `${strokeProps.dash} ${strokeProps.gap ?? ''}`
+    : undefined;
+}

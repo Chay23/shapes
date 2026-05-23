@@ -1,5 +1,6 @@
 import type { s } from '../../../types';
 import { useShapeTranslate } from '../../../hooks/useShapeTranslate';
+import { formatDashedStroke } from '@/lib/utils/common';
 
 type Props = {
   rect: s.Rectangle;
@@ -7,6 +8,8 @@ type Props = {
 
 export default function Rectangle({ rect }: Props) {
   const { handleShapeTranslate } = useShapeTranslate(rect);
+
+  const strokeDasharray = formatDashedStroke(rect.strokeDasharray);
 
   return (
     <g onPointerDown={handleShapeTranslate}>
@@ -20,6 +23,7 @@ export default function Rectangle({ rect }: Props) {
         fill={rect.fill}
         stroke={rect.stroke}
         strokeWidth={rect.strokeWidth}
+        strokeDasharray={strokeDasharray}
       />
     </g>
   );

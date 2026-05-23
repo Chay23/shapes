@@ -32,7 +32,7 @@ export default function NumberEditorInput({
   const getDisplayValue = () => {
     if (inputValue !== undefined) return inputValue;
     if (shapePropName) return selectedShape[shapePropName];
-    return value;
+    return value ?? 0;
   };
 
   const displayValue = getDisplayValue();
