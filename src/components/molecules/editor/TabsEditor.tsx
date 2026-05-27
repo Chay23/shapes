@@ -27,6 +27,7 @@ export function TabsEditor<T extends string>({
         {variantOptions.map(option => {
           return (
             <Button
+              key={option}
               className='flex-1 text-xs'
               variant={option === selectedOption ? 'default' : 'outline'}
               onPointerDown={() => handleOptionChange(option)}>

@@ -11,7 +11,7 @@ export default function Editor({ editorOptions }: Props) {
     <section className='flex flex-col gap-2'>
       {typeof title === 'string' ? <h4 className='text-lg'>{title}</h4> : title}
       {grids.map(grid => (
-        <EditorGrid grid={grid} />
+        <EditorGrid key={grid.title} grid={grid} />
       ))}
     </section>
   );

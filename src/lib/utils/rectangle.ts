@@ -47,15 +47,17 @@ export function getRectangleEditor(): ui.Editor {
         title: 'Size',
         cells: [
           {
+            key: 'rectangle-size',
             type: 'custom',
             component: ShapeSizeEditor,
           },
         ],
       },
       {
-        title: 'Appearance',
+        title: 'appearance',
         cells: [
           {
+            key: 'rectangle-fill',
             type: 'color-picker',
             shapePropName: 'fill',
             props: {
@@ -64,6 +66,7 @@ export function getRectangleEditor(): ui.Editor {
             },
           },
           {
+            key: 'rectangle-rotation',
             type: 'numeric',
             separator: true,
             shapePropName: 'rotation',
@@ -78,6 +81,7 @@ export function getRectangleEditor(): ui.Editor {
         title: 'Stroke',
         cells: [
           {
+            key: 'rectangle-stroke',
             type: 'custom',
             component: StrokeEditor,
           },

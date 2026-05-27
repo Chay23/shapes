@@ -6,6 +6,7 @@ export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
   solid: {
     cells: [
       {
+        key: 'solid-stroke-color',
         type: 'color-picker',
         shapePropName: 'stroke',
         props: {
@@ -14,6 +15,7 @@ export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
         },
       },
       {
+        key: 'solid-stroke-width',
         type: 'slider',
         separator: true,
         shapePropName: 'strokeWidth',
@@ -28,6 +30,7 @@ export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
   dashed: {
     cells: [
       {
+        key: 'dashed-stroke-color',
         type: 'color-picker',
         shapePropName: 'stroke',
         props: {
@@ -36,6 +39,7 @@ export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
         },
       },
       {
+        key: 'dashed-stroke-width',
         type: 'slider',
         shapePropName: 'strokeWidth',
         props: {
@@ -45,6 +49,7 @@ export const strokeStyleOptions: TabEditorArgs<StrokeType> = {
         },
       },
       {
+        key: 'dashed-stroke-style',
         type: 'custom',
         component: DashedStrokeEditor,
         separator: true,

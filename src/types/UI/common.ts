@@ -60,6 +60,7 @@ export type EditorCell = (
   | SliderEditorArgs
   | TabEditorArgs<string>
 ) & {
+  key: string;
   separator?: boolean;
 };
 
