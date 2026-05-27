@@ -1,4 +1,5 @@
 import { useShapeTranslate } from '@/hooks/useShapeTranslate';
+import { formatDashedStroke } from '@/lib/utils/common';
 import type { s } from '@/types';
 
 type Props = {
@@ -7,6 +8,8 @@ type Props = {
 
 export default function Ellipse({ ellipse }: Props) {
   const { handleShapeTranslate } = useShapeTranslate(ellipse);
+
+  const strokeDasharray = formatDashedStroke(ellipse.strokeDasharray);
 
   return (
     <g onPointerDown={handleShapeTranslate}>
@@ -20,6 +23,7 @@ export default function Ellipse({ ellipse }: Props) {
         fill={ellipse.fill}
         stroke={ellipse.stroke}
         strokeWidth={ellipse.strokeWidth}
+        strokeDasharray={strokeDasharray}
       />
     </g>
   );

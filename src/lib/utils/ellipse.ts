@@ -10,14 +10,13 @@ import {
   TYPE_ELLIPSE,
 } from '../constants/common';
 import ShapeSizeEditor from '@/components/organisms/editor/shape-size-editor';
-import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
-import FillColorEditor from '@/components/molecules/editor/ColorEditorInput';
 import {
   KEY_BRING_TO_FRONT_ITEM,
   KEY_DELETE_ITEM,
   KEY_ROTATE_90_ITEM,
   KEY_SEND_TO_BACK_ITEM,
 } from '../constants/context-menu';
+import StrokeEditor from '@/components/molecules/editor/StrokeEditor';
 
 export function constructEllipse(
   id: string,
@@ -35,23 +34,60 @@ export function constructEllipse(
     rx: DEFAULT_ELLIPSE_RX,
     ry: DEFAULT_ELLIPSE_RY,
     rotation: DEFAULT_ROTATION_ANGLE,
+    strokeDasharray: {
+      gap: undefined,
+      dash: undefined,
+    },
   };
 }
 
-export function getEllipseEditor(): ui.EditorGrid {
+export function getEllipseEditor(): ui.Editor {
   return {
     title: 'Ellipse',
-    components: [
+    grids: [
       {
-        render: ShapeSizeEditor,
-        separator: true,
+        title: 'Size',
+        cells: [
+          {
+            key: 'ellipse-size',
+            type: 'custom',
+            component: ShapeSizeEditor,
+          },
+        ],
       },
       {
-        render: StrokeWidthEditor,
-        separator: true,
+        title: 'appearance',
+        cells: [
+          {
+            key: 'ellipse-fill',
+            type: 'color-picker',
+            shapePropName: 'fill',
+            props: {
+              label: 'Color',
+              inputId: 'ellipse-fill-color',
+            },
+          },
+          {
+            key: 'ellipse-rotation',
+            type: 'numeric',
+            separator: true,
+            shapePropName: 'rotation',
+            props: {
+              label: 'Rotation \u00B0',
+              inputId: 'ellipse-rotation',
+            },
+          },
+        ],
       },
       {
-        render: FillColorEditor,
+        title: 'Stroke',
+        cells: [
+          {
+            key: 'ellipse-stroke',
+            type: 'custom',
+            component: StrokeEditor,
+          },
+        ],
       },
     ],
   };

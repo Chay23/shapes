@@ -1,7 +1,7 @@
-import EditorGrid from './EditorGrid';
+import Editor from './Editor';
 import { getEllipseEditor } from '@/lib/utils/ellipse';
 
 export default function EllipseEditor() {
   const ellipseEditorOptions = getEllipseEditor();
-  return <EditorGrid editorOptions={ellipseEditorOptions} />;
+  return <Editor editorOptions={ellipseEditorOptions} />;
 }
