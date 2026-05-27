@@ -1,7 +1,7 @@
 import { getTriangleEditor } from '@/lib/utils/triangle';
-import EditorGrid from './EditorGrid';
+import Editor from './Editor';
 
 export default function TriangleEditor() {
   const triangleEditorOptions = getTriangleEditor();
-  return <EditorGrid editorOptions={triangleEditorOptions} />;
+  return <Editor editorOptions={triangleEditorOptions} />;
 }

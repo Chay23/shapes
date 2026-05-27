@@ -56,7 +56,7 @@ export function getEllipseEditor(): ui.Editor {
         ],
       },
       {
-        title: 'appearance',
+        title: 'Appearance',
         cells: [
           {
             key: 'ellipse-fill',

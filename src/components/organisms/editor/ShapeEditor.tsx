@@ -22,8 +22,8 @@ export default function ShapeEditor() {
     case TYPE_ELLIPSE: {
       return <EllipseEditor />;
     }
-    // case TYPE_TRIANGLE: {
-    // return <TriangleEditor />;
-    // }
+    case TYPE_TRIANGLE: {
+      return <TriangleEditor />;
+    }
   }
 }

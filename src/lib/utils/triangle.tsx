@@ -9,8 +9,7 @@ import {
   TYPE_TRIANGLE,
 } from '../constants/common';
 import ShapeSizeEditor from '@/components/organisms/editor/shape-size-editor';
-import StrokeWidthEditor from '@/components/organisms/editor/StrokeWidthEditor';
-import FillColorEditor from '@/components/molecules/editor/ColorEditorInput';
+import StrokeEditor from '@/components/molecules/editor/StrokeEditor';
 
 export function constructTriangle(
   id: string,
@@ -38,24 +37,61 @@ export function constructTriangle(
       },
     ],
     rotation: DEFAULT_ROTATION_ANGLE,
+    strokeDasharray: {
+      gap: undefined,
+      dash: undefined,
+    },
   };
 }
 
-export function getTriangleEditor(): ui.EditorGrid {
+export function getTriangleEditor(): ui.Editor {
   return {
-    title: 'Triangle',
-    components: [
-      {
-        render: ShapeSizeEditor,
-        separator: true,
-      },
-      {
-        render: StrokeWidthEditor,
-        separator: true,
-      },
-      {
-        render: FillColorEditor,
-      },
-    ],
-  };
+      title: 'Triangle',
+      grids: [
+        {
+          title: 'Size',
+          cells: [
+            {
+              key: 'triangle-size',
+              type: 'custom',
+              component: ShapeSizeEditor,
+            },
+          ],
+        },
+        {
+          title: 'Appearance',
+          cells: [
+            {
+              key: 'triangle-fill',
+              type: 'color-picker',
+              shapePropName: 'fill',
+              props: {
+                label: 'Color',
+                inputId: 'triangle-fill-color',
+              },
+            },
+            {
+              key: 'triangle-rotation',
+              type: 'numeric',
+              separator: true,
+              shapePropName: 'rotation',
+              props: {
+                label: 'Rotation \u00B0',
+                inputId: 'triangle-rotation',
+              },
+            },
+          ],
+        },
+        {
+          title: 'Stroke',
+          cells: [
+            {
+              key: 'triangle-stroke',
+              type: 'custom',
+              component: StrokeEditor,
+            },
+          ],
+        },
+      ],
+    };
 }

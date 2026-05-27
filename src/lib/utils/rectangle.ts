@@ -54,7 +54,7 @@ export function getRectangleEditor(): ui.Editor {
         ],
       },
       {
-        title: 'appearance',
+        title: 'Appearance',
         cells: [
           {
             key: 'rectangle-fill',

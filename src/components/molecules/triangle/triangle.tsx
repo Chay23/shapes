@@ -1,4 +1,5 @@
 import { useShapeTranslate } from '@/hooks/useShapeTranslate';
+import { formatDashedStroke } from '@/lib/utils/common';
 import type { s } from '@/types';
 
 type Props = {
@@ -7,6 +8,8 @@ type Props = {
 
 export default function Triangle({ triangle }: Props) {
   const { handleShapeTranslate } = useShapeTranslate(triangle);
+
+  const strokeDasharray = formatDashedStroke(triangle.strokeDasharray);
 
   const {
     points: [point1, point2, point3],
@@ -20,6 +23,7 @@ export default function Triangle({ triangle }: Props) {
         fill={triangle.fill}
         stroke={triangle.stroke}
         strokeWidth={triangle.strokeWidth}
+        strokeDasharray={strokeDasharray}
       />
     </g>
   );
