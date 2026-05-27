@@ -61,6 +61,19 @@ export default function NumberEditorInput({
     if (e.key === 'Escape') {
       setInputValue(undefined);
     }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const value = parseFloat(e.currentTarget.value);
+      commitValue((value + 1).toString());
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const value = parseFloat(e.currentTarget.value);
+      const valueToCommit = value > 0 ? (value - 1).toString() : '0';
+      commitValue(valueToCommit);
+    }
   };
 
   return (
